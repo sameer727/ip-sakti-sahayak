@@ -130,3 +130,94 @@ def test_bhashini_api_endpoints():
         assert data["status"] == "ok"
         assert data["translated_text"] == "परीक्षण अनुवाद"
         assert data["provider"] == "bhashini"
+
+def test_all_22_scheduled_languages():
+    """Verify all 22 Eighth Schedule official Indian languages plus English are supported."""
+    scheduled_22 = [
+        "as", "bn", "brx", "doi", "gom", "gu", "hi", "kn", "ks", "mai",
+        "ml", "mni", "mr", "ne", "or", "pa", "sa", "sat", "sd", "ta", "te", "ur",
+    ]
+    # Total 23 languages (22 scheduled + English)
+    assert len(SUPPORTED_LANGUAGES) >= 23
+    assert "en" in SUPPORTED_LANGUAGES
+    assert SUPPORTED_LANGUAGES["en"]["name"] == "English"
+    assert SUPPORTED_LANGUAGES["en"]["script"] == "Latn"
+
+    for code in scheduled_22:
+        assert code in SUPPORTED_LANGUAGES, f"Missing scheduled language: {code}"
+        meta = SUPPORTED_LANGUAGES[code]
+        assert "name" in meta and len(meta["name"]) > 0
+        assert "native" in meta and len(meta["native"]) > 0
+        assert "script" in meta and len(meta["script"]) > 0
+
+    # Verify specific scripts
+    assert SUPPORTED_LANGUAGES["hi"]["script"] == "Deva"
+    assert SUPPORTED_LANGUAGES["ta"]["script"] == "Taml"
+    assert SUPPORTED_LANGUAGES["te"]["script"] == "Telu"
+    assert SUPPORTED_LANGUAGES["bn"]["script"] == "Beng"
+    assert SUPPORTED_LANGUAGES["pa"]["script"] == "Guru"
+    assert SUPPORTED_LANGUAGES["ur"]["script"] == "Arab"
+    assert SUPPORTED_LANGUAGES["sat"]["script"] == "Olck"
+
+
+def test_bhashini_ui_bundle_endpoint(tmp_path):
+    """Test /api/bhashini/ui-bundle for en, hi, and mocked Indic language with disk caching."""
+    test_client = TestClient(app)
+
+    # 1. Test default parameter (defaults to "en")
+    resp_def = test_client.get("/api/bhashini/ui-bundle")
+    assert resp_def.status_code == 200
+    data_def = resp_def.json()
+    assert data_def["status"] == "ok"
+    assert data_def["language"] == "en"
+    assert data_def["bundle"]["navChat"] == "Chat Assistant"
+
+    # 2. Test explicit "en"
+    resp_en = test_client.get("/api/bhashini/ui-bundle?lang=en")
+    assert resp_en.status_code == 200
+    data_en = resp_en.json()
+    assert data_en["status"] == "ok"
+    assert data_en["language"] == "en"
+    assert isinstance(data_en["bundle"], dict)
+    assert data_en["bundle"]["navChat"] == "Chat Assistant"
+    assert data_en["bundle"]["brandSub"] == "AI Assistant for Ayurvedic IP & Regulatory Guidance"
+
+    # 3. Test explicit "hi"
+    resp_hi = test_client.get("/api/bhashini/ui-bundle?lang=hi")
+    assert resp_hi.status_code == 200
+    data_hi = resp_hi.json()
+    assert data_hi["status"] == "ok"
+    assert data_hi["language"] == "hi"
+    assert isinstance(data_hi["bundle"], dict)
+    assert data_hi["bundle"]["navChat"] == "चैट सहायक"
+    assert data_hi["bundle"]["brandSub"] == "आयुर्वेदिक IP एवं नियामक मार्गदर्शन हेतु AI सहायक"
+
+    # 4. Test mocked Indic language (e.g. Tamil 'ta') with batch translation & disk caching
+    def mock_translate_batch(texts, source_lang="en", target_lang="ta"):
+        return [f"[ta_{t}]" for t in texts]
+
+    with patch("ipsakti.core.bhashini.I18N_CACHE_DIR", tmp_path):
+        with patch.object(BhashiniClient, "translate_batch", side_effect=mock_translate_batch):
+            resp_ta = test_client.get("/api/bhashini/ui-bundle?lang=ta")
+            assert resp_ta.status_code == 200
+            data_ta = resp_ta.json()
+            assert data_ta["status"] == "ok"
+            assert data_ta["language"] == "ta"
+            assert isinstance(data_ta["bundle"], dict)
+            assert data_ta["bundle"]["navChat"] == "[ta_Chat Assistant]"
+
+            # Check that it saved to the local disk cache
+            cache_file = tmp_path / "ta.json"
+            assert cache_file.is_file()
+
+            # Second request should read directly from disk cache without calling translate_batch
+            with patch.object(
+                BhashiniClient,
+                "translate_batch",
+                side_effect=RuntimeError("translate_batch should not be called when cached!"),
+            ):
+                resp_ta_cached = test_client.get("/api/bhashini/ui-bundle?lang=ta")
+                assert resp_ta_cached.status_code == 200
+                data_cached = resp_ta_cached.json()
+                assert data_cached["bundle"]["navChat"] == "[ta_Chat Assistant]"
+

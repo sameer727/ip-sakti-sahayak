@@ -579,6 +579,13 @@ def _attach_frontend(app) -> None:
             "authority": "Ministry of Electronics and Information Technology (MeitY)",
         }
 
+    @app.get("/api/bhashini/ui-bundle", include_in_schema=True)
+    def bhashini_ui_bundle(lang: str = "en") -> dict:
+        """Return translated UI chrome bundle for the requested Indic language."""
+        from ipsakti.core.bhashini import get_ui_bundle
+        bundle = get_ui_bundle(target_lang=lang)
+        return {"status": "ok", "language": lang, "bundle": bundle}
+
     frontend_dir = _REPO_ROOT / "frontend"
     if frontend_dir.is_dir():
         app.mount("/", StaticFiles(directory=str(frontend_dir), html=True),

@@ -4,29 +4,36 @@
 "use strict";
 
 const App = (() => {
+  const savedLang = (typeof localStorage !== "undefined" && localStorage.getItem("ipsakti_lang")) || "en";
   const state = {
     jurisdiction: "India",
-    language: "en",
+    language: savedLang,
     formulationClass: null,
     history: [],          // {role, content} — capped, sent with each request
     busy: false,
   };
 
+  let lastMetaRecord = null;
+
   const SCENARIOS = {
     "classical-patent": {
       query: "Can I patent a classical Ayurvedic formulation from an authoritative text?",
+      query_hi: "क्या मैं किसी प्रामाणिक ग्रंथ से शास्त्रीय आयुर्वेदिक फॉर्मूलेशन को पेटेंट करा सकता हूँ?",
       jurisdiction: "India",
     },
     "abs": {
       query: "I want to commercialise a formulation using a plant collected in India — what approvals do I need?",
+      query_hi: "मैं भारत से एकत्र किए गए पौधे का उपयोग करके फॉर्मूलेशन का व्यावसायीकरण करना चाहता हूँ — मुझे किन स्वीकृतियों की आवश्यकता है?",
       jurisdiction: "India",
     },
     "gi": {
       query: "How do I register a GI tag for an Ayurvedic product tied to a region?",
+      query_hi: "किसी क्षेत्र-विशिष्ट आयुर्वेदिक उत्पाद हेतु जीआई (GI) टैग कैसे पंजीकृत करें?",
       jurisdiction: "India",
     },
     "international-patent": {
       query: "I want to file a patent for a new Ayurvedic drug outside India — what route do I use?",
+      query_hi: "मैं भारत के बाहर एक नई आयुर्वेदिक औषधि के लिए पेटेंट दाखिल करना चाहता हूँ — कौन सा मार्ग अपनाऊँ?",
       jurisdiction: "International",
     },
   };
@@ -168,6 +175,45 @@ const App = (() => {
     note.classList.add("visible");
   }
 
+  async function setLanguage(lang) {
+    if (!lang) return;
+    const spinner = el("langSpinner");
+    if (spinner) spinner.classList.remove("hidden");
+
+    state.language = lang;
+
+    // Sync quick toggle buttons
+    const toggleBtns = document.querySelectorAll("#languageToggle .seg");
+    toggleBtns.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.value === lang);
+    });
+
+    // Sync moreIndicLangSelect dropdown
+    const moreSelect = el("moreIndicLangSelect");
+    if (moreSelect) {
+      if (lang === "en") {
+        moreSelect.value = "";
+      } else {
+        moreSelect.value = lang;
+      }
+    }
+
+    try {
+      await I18N.applyAsync(lang);
+    } catch (err) {
+      console.error("Language switch error:", err);
+    } finally {
+      if (spinner) spinner.classList.add("hidden");
+    }
+
+    // Re-render UI components that depend on current language
+    updateJurisdictionNote();
+    refreshHealth();
+    if (lastMetaRecord) {
+      setMeta(lastMetaRecord.response, lastMetaRecord.seconds, lastMetaRecord.kind);
+    }
+  }
+
   function initShell() {
     document.querySelectorAll(".nav-item").forEach((item) => {
       item.addEventListener("click", () => switchView(item.dataset.view));
@@ -182,14 +228,21 @@ const App = (() => {
       updateJurisdictionNote();
     });
 
-    el("languageToggle").addEventListener("click", (event) => {
+    el("languageToggle").addEventListener("click", async (event) => {
       const button = event.target.closest(".seg");
       if (!button) return;
-      state.language = button.dataset.value;
-      document.querySelectorAll("#languageToggle .seg").forEach((s) =>
-        s.classList.toggle("active", s === button));
-      I18N.apply(state.language);
+      await setLanguage(button.dataset.value);
     });
+
+    const moreSelect = el("moreIndicLangSelect");
+    if (moreSelect) {
+      moreSelect.addEventListener("change", async (event) => {
+        const lang = event.target.value;
+        if (lang) {
+          await setLanguage(lang);
+        }
+      });
+    }
 
     el("formulationSelect").addEventListener("change", (event) => {
       state.formulationClass = event.target.value || null;
@@ -201,6 +254,7 @@ const App = (() => {
       els.conversation().appendChild(buildWelcome());
       els.sourcesList().innerHTML = "";
       els.sourcesEmpty().classList.remove("hidden");
+      lastMetaRecord = null;
       setMeta(null);
       els.newChatBtn().classList.add("hidden");
     });
@@ -425,11 +479,15 @@ const App = (() => {
 
   function setMeta(response, seconds, kind) {
     if (!response) {
+      lastMetaRecord = null;
       els.metaEmpty().classList.remove("hidden");
       els.metaList().classList.add("hidden");
       return;
     }
-    const langName = state.language === "hi" ? "हिन्दी" : "English";
+    lastMetaRecord = { response, seconds, kind };
+    const langName = I18N.getLanguageFullName
+      ? I18N.getLanguageFullName(state.language)
+      : (state.language === "hi" ? "हिन्दी" : "English");
     const statusKey = kind === "error" ? "statusError"
       : response.abstention ? "statusAbstained" : "statusAnswered";
     const statusClass = kind === "error" ? "status-error"
@@ -444,7 +502,7 @@ const App = (() => {
       [I18N.t("rowLanguage"), esc(langName), true],
       [I18N.t("rowFormulation"), esc(state.formulationClass || I18N.t("autoDetect")), true],
       [I18N.t("rowSources"), String((response.citations || []).length), true],
-      [I18N.t("rowTime"), esc(I18N.t(timeKey).replace("{s}", seconds.toFixed(2))), true],
+      [I18N.t("rowTime"), esc(I18N.t(timeKey).replace("{s}", (seconds || 0).toFixed(2))), true],
     ];
     els.metaList().innerHTML = rows
       .map(([label, value]) => `<div class="meta-row"><dt>${label}</dt><dd>${value}</dd></div>`)
@@ -704,7 +762,8 @@ const App = (() => {
             s.classList.toggle("active", s.dataset.value === spec.jurisdiction));
           updateJurisdictionNote();
         }
-        sendQuery(spec.query);
+        const queryText = (state.language === "hi" && spec.query_hi) ? spec.query_hi : spec.query;
+        sendQuery(queryText);
       });
     });
   }
@@ -747,7 +806,13 @@ const App = (() => {
         recognition.stop();
         return;
       }
-      recognition.lang = state.language === "hi" ? "hi-IN" : "en-IN";
+      const speechLangMap = {
+        hi: "hi-IN", ta: "ta-IN", te: "te-IN", bn: "bn-IN",
+        mr: "mr-IN", gu: "gu-IN", kn: "kn-IN", ml: "ml-IN",
+        pa: "pa-IN", or: "or-IN", as: "as-IN", ur: "ur-IN",
+        sa: "sa-IN", en: "en-IN"
+      };
+      recognition.lang = speechLangMap[state.language] || (state.language === "en" ? "en-IN" : `${state.language}-IN`);
       try {
         recognition.start();
       } catch (e) {
@@ -786,6 +851,11 @@ const App = (() => {
     Classifier.init();
     refreshHealth();
     window.setInterval(refreshHealth, 30000);
+
+    // Synchronize initial language from state / localStorage
+    if (state.language) {
+      setLanguage(state.language);
+    }
 
     els.composer().addEventListener("submit", (event) => {
       event.preventDefault();

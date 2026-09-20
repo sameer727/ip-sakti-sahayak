@@ -99,17 +99,29 @@
     </div>
 
     <nav class="nav" aria-label="Main">
-      <button class="nav-item active" data-view="chat" data-i18n="navChat">
-        <svg class="icon"><use href="#i-chat"/></svg>Chat Assistant
+      <button class="nav-item active" data-view="chat">
+        <svg class="icon"><use href="#i-chat"/></svg><span data-i18n="navChat">Chat Assistant</span>
       </button>
-      <button class="nav-item" data-view="classifier" data-i18n="navClassifier">
-        <svg class="icon"><use href="#i-flask"/></svg>Formulation Classifier
+      <button class="nav-item" data-view="classifier">
+        <svg class="icon"><use href="#i-flask"/></svg><span data-i18n="navClassifier">Formulation Classifier</span>
       </button>
-      <button class="nav-item" data-view="about" data-i18n="navAbout">
-        <svg class="icon"><use href="#i-info"/></svg>About
+      <button class="nav-item" data-view="gis">
+        <svg class="icon"><use href="#i-map"/></svg><span data-i18n="navGis">GIS &amp; Geo-Origin</span>
       </button>
-      <button class="nav-item" data-view="help" data-i18n="navHelp">
-        <svg class="icon"><use href="#i-help"/></svg>Help
+      <button class="nav-item" data-view="graph">
+        <svg class="icon"><use href="#i-network"/></svg><span data-i18n="navGraph">Knowledge Graph</span>
+      </button>
+      <button class="nav-item" data-view="forms">
+        <svg class="icon"><use href="#i-document"/></svg><span data-i18n="navForms">Forms &amp; Registries</span>
+      </button>
+      <button class="nav-item" data-view="audit">
+        <svg class="icon"><use href="#i-lock"/></svg><span data-i18n="navAudit">DPDP Audit Trail</span>
+      </button>
+      <button class="nav-item" data-view="about">
+        <svg class="icon"><use href="#i-info"/></svg><span data-i18n="navAbout">About</span>
+      </button>
+      <button class="nav-item" data-view="help">
+        <svg class="icon"><use href="#i-help"/></svg><span data-i18n="navHelp">Help</span>
       </button>
     </nav>
 
@@ -135,24 +147,52 @@
         <div class="control-group">
           <span class="control-label"><svg class="icon icon-sm"><use href="#i-globe"/></svg><span data-i18n="jurisdiction">Jurisdiction</span></span>
           <div class="segmented" id="jurisdictionToggle" role="group" aria-label="Jurisdiction">
-            <button class="seg active" data-value="India">India</button>
-            <button class="seg" data-value="International">International</button>
+            <button type="button" class="seg active" data-value="India" data-i18n="jurisdictionIndia">India</button>
+            <button type="button" class="seg" data-value="International" data-i18n="jurisdictionIntl">International</button>
           </div>
         </div>
         <div class="control-group">
           <span class="control-label"><svg class="icon icon-sm"><use href="#i-leaf"/></svg><span data-i18n="formulation">Formulation class</span></span>
-          <select id="formulationSelect" class="select">
+          <select id="formulationSelect" class="select" aria-label="Formulation class">
             <option value="" data-i18n="autoDetect">Auto-detect</option>
           </select>
         </div>
-        <div class="control-group">
-          <span class="control-label"><svg class="icon icon-sm"><use href="#i-globe"/></svg><span data-i18n="language">Language</span> <span class="badge-bhashini" title="National Language Translation Mission (MeitY)">Bhashini</span></span>
-          <div class="segmented" id="languageToggle" role="group" aria-label="Language">
-            <button class="seg active" data-value="en">English</button>
-            <button class="seg" data-value="hi">हिन्दी</button>
-            <button class="seg" data-value="ta">தமிழ்</button>
-            <button class="seg" data-value="te">తెలుగు</button>
-            <button class="seg" data-value="bn">বাংলা</button>
+        <div class="control-group lang-control-group">
+          <div class="control-label-row">
+            <span class="control-label"><svg class="icon icon-sm"><use href="#i-globe"/></svg><span data-i18n="language">Language</span></span>
+            <span class="badge-bhashini" title="National Language Translation Mission (MeitY)">Bhashini</span>
+            <span id="langSpinner" class="lang-spinner hidden" title="Translating UI via Bhashini NLTM..." aria-label="Translating"></span>
+          </div>
+          <div class="lang-controls-row">
+            <div class="segmented lang-segmented" id="languageToggle" role="group" aria-label="Quick Language Toggle">
+              <button type="button" class="seg active" data-value="en" title="English">English</button>
+              <button type="button" class="seg" data-value="hi" title="हिन्दी (Hindi)">हिन्दी</button>
+            </div>
+            <select id="moreIndicLangSelect" class="select select-indic" aria-label="22 Scheduled Indic Languages">
+              <option value="" disabled selected data-i18n="moreIndicPlaceholder">More Indic Languages (22) ▾</option>
+              <option value="as">অসমীয়া (Assamese)</option>
+              <option value="bn">বাংলা (Bengali)</option>
+              <option value="brx">बड़ो (Bodo)</option>
+              <option value="doi">डोगरी (Dogri)</option>
+              <option value="gu">ગુજરાતી (Gujarati)</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+              <option value="kn">ಕನ್ನಡ (Kannada)</option>
+              <option value="ks">कॉशुर (Kashmiri)</option>
+              <option value="kok">कोंकणी (Konkani)</option>
+              <option value="mai">मैथिली (Maithili)</option>
+              <option value="ml">മലയാളം (Malayalam)</option>
+              <option value="mni">মৈতৈলোন্ (Manipuri)</option>
+              <option value="mr">मराठी (Marathi)</option>
+              <option value="ne">नेपाली (Nepali)</option>
+              <option value="or">ଓଡ଼ିଆ (Odia)</option>
+              <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+              <option value="sa">संस्कृतम् (Sanskrit)</option>
+              <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
+              <option value="sd">سنڌي (Sindhi)</option>
+              <option value="ta">தமிழ் (Tamil)</option>
+              <option value="te">తెలుగు (Telugu)</option>
+              <option value="ur">اردو (Urdu)</option>
+            </select>
           </div>
         </div>
       </div>
@@ -210,6 +250,9 @@
           data-i18n-ph="askPlaceholder"
           placeholder="Ask an Ayurvedic IP / regulatory question…"
           aria-label="Your question"></textarea>
+        <button type="button" class="btn-voice" id="voiceInputBtn" title="Voice Input" aria-label="Voice Input">
+          <svg class="icon"><use href="#i-mic"/></svg>
+        </button>
         <button type="submit" class="send-btn" id="sendBtn" aria-label="Send">
           <svg class="icon"><use href="#i-send"/></svg>
         </button>

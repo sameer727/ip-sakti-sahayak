@@ -80,3 +80,43 @@ def test_api_endpoints_unaffected_by_static_mount(client):
         "language": "en", "jurisdiction": "International"})
     assert response.status_code == 200
     assert response.json()["abstention"] is False
+
+
+def test_indic_multilingual_frontend_internationalization(client):
+    """Verify that index.html contains all 22 scheduled Indic languages in moreIndicLangSelect,
+    the Bhashini badge, language toggle, and that assets load properly."""
+    res = client.get("/")
+    assert res.status_code == 200
+    html = res.text
+
+    # 1. Check quick toggle for English and Hindi
+    assert 'id="languageToggle"' in html
+    assert 'data-value="en"' in html
+    assert 'data-value="hi"' in html
+
+    # 2. Check Bhashini badge and spinner
+    assert 'badge-bhashini' in html
+    assert 'id="langSpinner"' in html
+
+    # 3. Check moreIndicLangSelect and all 22 scheduled languages
+    assert 'id="moreIndicLangSelect"' in html
+    scheduled_22 = [
+        "as", "bn", "brx", "doi", "gu", "hi", "kn", "ks", "kok", "mai",
+        "ml", "mni", "mr", "ne", "or", "pa", "sa", "sat", "sd", "ta", "te", "ur"
+    ]
+    for code in scheduled_22:
+        assert f'value="{code}"' in html, f"Missing scheduled language {code} in moreIndicLangSelect"
+
+    # 4. Check i18n.js and styles.css content
+    i18n_res = client.get("/js/i18n.js")
+    assert i18n_res.status_code == 200
+    assert "applyAsync" in i18n_res.text
+    assert "/api/bhashini/ui-bundle" in i18n_res.text
+    assert "localStorage" in i18n_res.text
+
+    css_res = client.get("/css/styles.css")
+    assert css_res.status_code == 200
+    assert ".select-indic" in css_res.text
+    assert ".lang-spinner" in css_res.text
+    assert "@media (max-width: 768px)" in css_res.text
+

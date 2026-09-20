@@ -1,9 +1,36 @@
-/* i18n.js — UI chrome labels only (English / हिन्दी).
-   Legal content is never translated here: it comes from the backend in the
-   selected language. Statutory and treaty names stay in their official form. */
+/* i18n.js — UI chrome labels & internationalization for IP-SAKTI Sahayak.
+   Supports all 22 Eighth Schedule Indian languages via Bhashini NLTM.
+   Legal content comes grounded from the backend. */
 "use strict";
 
 const I18N = (() => {
+  // 22 Scheduled Indian Languages + English
+  const SCHEDULED_LANGUAGES = {
+    en: { name: "English", native: "English", script: "Latn" },
+    as: { name: "Assamese", native: "অসমীয়া", script: "Beng" },
+    bn: { name: "Bengali", native: "বাংলা", script: "Beng" },
+    brx: { name: "Bodo", native: "बड़ो", script: "Deva" },
+    doi: { name: "Dogri", native: "डोगरी", script: "Deva" },
+    gu: { name: "Gujarati", native: "ગુજરાતી", script: "Gujr" },
+    hi: { name: "Hindi", native: "हिन्दी", script: "Deva" },
+    kn: { name: "Kannada", native: "ಕನ್ನಡ", script: "Knda" },
+    ks: { name: "Kashmiri", native: "कॉशुर", script: "Deva" },
+    kok: { name: "Konkani", native: "कोंकणी", script: "Deva" },
+    mai: { name: "Maithili", native: "मैथिली", script: "Deva" },
+    ml: { name: "Malayalam", native: "മലയാളം", script: "Mlym" },
+    mni: { name: "Manipuri", native: "মৈতৈলোন্", script: "Beng" },
+    mr: { name: "Marathi", native: "मराठी", script: "Deva" },
+    ne: { name: "Nepali", native: "नेपाली", script: "Deva" },
+    or: { name: "Odia", native: "ଓଡ଼ିଆ", script: "Orya" },
+    pa: { name: "Punjabi", native: "ਪੰਜਾਬੀ", script: "Guru" },
+    sa: { name: "Sanskrit", native: "संस्कृतम्", script: "Deva" },
+    sat: { name: "Santali", native: "ᱥᱟᱱᱛᱟᱲᱤ", script: "Olck" },
+    sd: { name: "Sindhi", native: "سنڌي", script: "Arab" },
+    ta: { name: "Tamil", native: "தமிழ்", script: "Taml" },
+    te: { name: "Telugu", native: "తెలుగు", script: "Telu" },
+    ur: { name: "Urdu", native: "اردو", script: "Arab" },
+  };
+
   const labels = {
     en: {
       brandSub: "AI Assistant for Ayurvedic IP & Regulatory Guidance",
@@ -20,9 +47,12 @@ const I18N = (() => {
       healthOk: "Service online",
       healthDown: "Service offline",
       jurisdiction: "Jurisdiction",
+      jurisdictionIndia: "India",
+      jurisdictionIntl: "International",
       formulation: "Formulation class",
       language: "Language",
       autoDetect: "Auto-detect",
+      moreIndicPlaceholder: "More Indic Languages (22) ▾",
       chatHint: "Ask an India or International IP / regulatory question about an Ayurvedic product.",
       classifierHint: "Answer the guided questions — the classifier sorts your product into its regulatory category.",
       gisHint: "Ayurveda Geographical Indications (GI), BDA §10(4)(d) origin disclosure and remote sensing habitat analysis.",
@@ -101,6 +131,10 @@ const I18N = (() => {
       noClassification: "Answer the questions and press “Classify formulation” — the result will appear here.",
       resultConfidence: "Confidence",
       clsFormulation: "Formulation class",
+      gisTitle: "Ayurveda Geographical Indications (GI) & Geo-Origin Explorer",
+      graphTitle: "Ayurveda IP & Regulatory Knowledge Graph",
+      formsTitle: "Statutory Forms & Official Registries Hub",
+      auditTitle: "DPDP Act 2023 & MeitY AI Advisory Audit Trail",
       aboutTitle: "About IP-SAKTI Sahayak",
       aboutLead: "A source-cited assistant for Ayurvedic intellectual property and regulatory guidance — across national and international regimes, in English and Hindi.",
       aboutHow: "What the system does",
@@ -120,7 +154,7 @@ const I18N = (() => {
       helpSources: "Sources",
       helpSourcesBody: "Citations link to official portals — India Code, IP India, the National Biodiversity Authority, CDSCO, FSSAI, WIPO and WTO. TKDL (tkdl.res.in) is referenced as a pointer: its detailed contents are available to patent offices, not the public.",
       helpLimits: "Limitations",
-      helpLimitsBody: "This is a hackathon MVP over a small curated corpus. It provides general information, not legal advice — verify with the official sources or a qualified professional before acting. A human IP-facilitator escalation path is not part of this build.",
+      helpLimitsBody: "This is a hackathon MVP over a small curated corpus. It provides general information, not legal advice — verify with official sources or a qualified professional before acting. A human IP-facilitator escalation path is not part of this build.",
     },
     hi: {
       brandSub: "आयुर्वेदिक IP एवं नियामक मार्गदर्शन हेतु AI सहायक",
@@ -137,9 +171,12 @@ const I18N = (() => {
       healthOk: "सेवा ऑनलाइन है",
       healthDown: "सेवा उपलब्ध नहीं",
       jurisdiction: "क्षेत्राधिकार",
+      jurisdictionIndia: "भारत",
+      jurisdictionIntl: "अंतरराष्ट्रीय",
       formulation: "फॉर्मूलेशन वर्ग",
       language: "भाषा",
       autoDetect: "स्वतः पहचान",
+      moreIndicPlaceholder: "अधिक भारतीय भाषाएँ (22) ▾",
       chatHint: "आयुर्वेदिक उत्पाद से जुड़े भारत या अंतरराष्ट्रीय IP / नियामक प्रश्न पूछें।",
       classifierHint: "निर्देशित प्रश्नों के उत्तर दें — वर्गीकरण आपके उत्पाद को उसकी नियामक श्रेणी में रखता है।",
       gisHint: "आयुर्वेदिक भौगोलिक संकेत (जीआई), बीडीए धारा १०(४)(घ) भू-उत्पत्ति घोषणा एवं उपग्रह पर्यावरण विश्लेषण।",
@@ -212,12 +249,16 @@ const I18N = (() => {
       resetBtn: "रीसेट",
       relevantRegimes: "संबंधित विधियाँ",
       clarificationNeeded: "स्पष्टीकरण आवश्यक",
-      suggestedQuestions: "सुझाए गया अगले प्रश्न",
+      suggestedQuestions: "सुझाए गए अगले प्रश्न",
       reasoningTrace: "वर्गीकरण तर्क-ट्रेस",
       tkdlHeading: "TKDL संकेत",
       noClassification: "प्रश्नों के उत्तर देकर “फॉर्मूलेशन वर्गीकृत करें” दबाएँ — परिणाम यहाँ दिखेगा।",
       resultConfidence: "विश्वास स्तर",
       clsFormulation: "फॉर्मूलेशन वर्ग",
+      gisTitle: "आयुर्वेद जीआई एवं भू-उत्पत्ति अन्वेषक",
+      graphTitle: "आयुर्वेद IP एवं नियामक ज्ञान आलेख",
+      formsTitle: "वैधानिक प्रपत्र एवं आधिकारिक पंजीयन केंद्र",
+      auditTitle: "डीपीडीपी अधिनियम २०२३ एवं MeitY ऑडिट ट्रेल",
       aboutTitle: "IP-SAKTI सहायक परिचय",
       aboutLead: "आयुर्वेदिक बौद्धिक संपदा और नियामक मार्गदर्शन हेतु स्रोत-उद्धृत सहायक — राष्ट्रीय और अंतरराष्ट्रीय दोनों क्षेत्रों में, अंग्रेज़ी और हिन्दी में।",
       aboutHow: "प्रणाली क्या करती है",
@@ -225,41 +266,1103 @@ const I18N = (() => {
       aboutBuild: "निर्माण कैसे हुआ है",
       helpTitle: "सहायता",
       helpAsk: "प्रश्न पूछना",
+      helpAskBody: "शीर्ष पट्टी में क्षेत्राधिकार और भाषा चुनें, फिर प्रश्न पूछें — या त्वरित डेमो परिदृश्य कार्ड से शुरुआत करें।",
       helpJurisdiction: "क्षेत्राधिकार",
+      helpIndia: "भारतीय कानूनों के उत्तर: पेटेंट अधिनियम, जीआई, ट्रेडमार्क, डीएंडसी, एफएसएसएआई, जैव विविधता।",
+      helpIntl: "संधियों और अंतरराष्ट्रीय दाखिला मार्गों के उत्तर: ट्रिप्स, विपो, पीसीटी, मैड्रिड।",
       helpConfidence: "विश्वास स्तर और इंकार",
       helpClassifier: "फॉर्मूलेशन वर्गीकरण",
       helpSources: "स्रोत",
       helpLimits: "सीमाएँ",
     },
+    ta: {
+      brandSub: "ஆயுர்வேத IP & ஒழுங்குமுறை வழிகாட்டலுக்கான AI உதவியாளர்",
+      navChat: "உரையாடல் உதவியாளர்",
+      navClassifier: "சூத்திர வகைப்படுத்தி",
+      navGis: "ஜிஐஎஸ் & புவி-தோற்றம்",
+      navGraph: "அறிவு வரைபடம்",
+      navForms: "சட்டப்பூர்வ படிவங்கள்",
+      navAudit: "DPDP தணிக்கை பதிவு",
+      navAbout: "பற்றி",
+      navHelp: "உதவி",
+      tagline: "பாரம்பரிய அறிவு. பாதுகாக்கப்பட்ட எதிர்காலம்.",
+      healthChecking: "சேவை சரிபார்க்கப்படுகிறது…",
+      healthOk: "சேவை ஆன்லைனில் உள்ளது",
+      healthDown: "சேவை கிடைக்கவில்லை",
+      jurisdiction: "அதிகார வரம்பு",
+      jurisdictionIndia: "இந்தியா",
+      jurisdictionIntl: "சர்வதேசம்",
+      formulation: "தயாரிப்பு வகை",
+      language: "மொழி",
+      autoDetect: "தானியங்கி கண்டறிதல்",
+      moreIndicPlaceholder: "கூடுதல் இந்திய மொழிகள் (22) ▾",
+      chatHint: "ஆயுர்வேத தயாரிப்பு குறித்த இந்திய அல்லது சர்வதேச IP / ஒழுங்குமுறை கேள்வியைக் கேளுங்கள்.",
+      classifierHint: "வழிகாட்டப்பட்ட கேள்விகளுக்கு பதிலளிக்கவும் — வகைப்படுத்தி உங்கள் தயாரிப்பை வகைப்படுத்துகிறது.",
+      gisHint: "ஆயுர்வேத புவிசார் குறியீடுகள் (GI) மற்றும் தொலை உணர்வு வாழ்விட பகுப்பாய்வு.",
+      graphHint: "ஊடாடும் அறிவு வரைபடம்: சூத்திரங்கள் → சட்டங்கள் → வழக்குகள் → சர்வதேச ஒப்பந்தங்கள்.",
+      formsHint: "அதிகாரப்பூர்வ IP India, NBA, FoSCoS மற்றும் WIPO சட்டப்பூர்வ படிவங்கள்.",
+      auditHint: "DPDP சட்டம் 2023 உடன் இணக்கமான தணிக்கைப் பதிவு.",
+      aboutHint: "IP-SAKTI Sahayak என்ன செய்கிறது, எவ்வாறு பாதுகாப்பாக உள்ளது.",
+      helpHint: "உதவியாளரை எவ்வாறு பயன்படுத்துவது மற்றும் பதில்களைப் படிப்பது.",
+      escalateBtn: "மனித ஆலோசகரிடம் பரிந்துரைக்கவும்",
+      voiceInput: "குரல் உள்ளீடு",
+      readAloud: "படிக்கவும்",
+      jurisdictionNoteIndia: "இந்தியா அதிகார வரம்பு — பதில்கள் இந்திய சட்ட வரம்பிற்குள் மட்டுமே இருக்கும்.",
+      jurisdictionNoteIntl: "சர்வதேச அதிகார வரம்பு — ஒப்பந்தங்கள் மற்றும் சர்வதேச விண்ணப்ப வழிகளை மட்டுமே உள்ளடக்கும்.",
+      demoTitle: "விரைவு செயல்முறை காட்சிகள்",
+      demo1: "பாரம்பரிய காப்புரிமை",
+      demo1sub: "பாரம்பரிய சூத்திரங்களுக்கான பிரிவு 3(p) & TKDL",
+      demo2: "ABS / தாவர அனுமதிகள்",
+      demo2sub: "தாவர அடிப்படையிலான தயாரிப்புகளுக்கான பல்லுயிர் சட்டம்",
+      demo3: "தயாரிப்பு வகைப்பாடு",
+      demo3sub: "வழிகாட்டப்பட்ட கேள்வித்தாள் — உணவு vs மருந்து",
+      demo4: "GI பதிவு",
+      demo4sub: "பிராந்திய தயாரிப்புகளுக்கான புவிசார் குறியீடு",
+      demo5: "சர்வதேச காப்புரிமை",
+      demo5sub: "இந்தியாவுக்கு வெளியே தாக்கல் செய்வதற்கான PCT வழி",
+      welcomeTitle: "வணக்கம். உங்கள் ஆயுர்வேத தயாரிப்புக்கு எவ்வாறு உதவ முடியும்?",
+      welcomeSub: "ஒவ்வொரு பதிலும் உண்மையான சட்ட ஆதாரங்களின் அடிப்படையிலும் ஆதார மேற்கோள்களுடனும் வழங்கப்படுகிறது.",
+      askPlaceholder: "ஆயுர்வேத IP அல்லது ஒழுங்குமுறை கேள்வியைக் கேளுங்கள்…",
+      composerHint: "பொது தகவல் மட்டுமே — சட்ட ஆலோசனை அல்ல. ஆதாரங்கள் மேற்கோள் காட்டப்படுகின்றன.",
+      answerLabel: "பதில்",
+      confidenceLabel: "நம்பகத்தன்மை",
+      sourcesLabel: "ஆதாரங்கள்",
+      abstainTitle: "போதுமான சரிபார்க்கப்பட்ட சான்றுகள் இல்லை",
+      abstainNote: "யூகிப்பதற்கு பதிலாக உதவியாளர் பதிலளிக்க மறுக்கிறது.",
+      openClassifier: "சூத்திர வகைப்படுத்தியைத் திறக்கவும்",
+      newChat: "புதிய உரையாடல்",
+      responseMeta: "பதில் விவரம்",
+      noResponseYet: "பதில் இன்னும் இல்லை — விவரங்களைக் காண கேள்வி கேளுங்கள்.",
+      specialists: "இணைக்கப்பட்ட நிபுணர்கள்",
+      loading: "ஏற்றுகிறது…",
+      sourcesTitle: "ஆதாரங்கள் & மேற்கோள்கள்",
+      noSources: "சமீபத்திய பதிலின் மேற்கோள்கள் இங்கே தோன்றும்.",
+      disclaimerTitle: "பொறுப்புத் துறப்பு",
+      disclaimerBody: "IP-SAKTI Sahayak பொதுவான தகவல்களை வழங்குகிறது, சட்ட ஆலோசனையை அல்ல.",
+      statusAnswered: "பதிலளிக்கப்பட்டது",
+      statusAbstained: "மறுக்கப்பட்டது",
+      statusError: "பிழை",
+      classifierTitle: "சூத்திர வகைப்படுத்தி",
+      classifyBtn: "வகைப்படுத்தவும்",
+      resetBtn: "மீட்டமைக்கவும்",
+      aboutTitle: "IP-SAKTI Sahayak பற்றி",
+      helpTitle: "உதவி",
+    },
+    te: {
+      brandSub: "ఆయుర్వేద IP & నియంత్రణ మార్గదర్శకత్వం కోసం AI సహాయకుడు",
+      navChat: "చాట్ అసిస్టెంట్",
+      navClassifier: "ఫార్ములేషన్ వర్గీకరణ",
+      navGis: "జిఐఎస్ & భౌగోళిక-మూలం",
+      navGraph: "నాలెడ్జ్ గ్రాఫ్",
+      navForms: "చట్టబద్ధమైన ఫారమ్‌లు",
+      navAudit: "DPDP ఆడిట్ ట్రయల్",
+      navAbout: "గురించి",
+      navHelp: "సహాయం",
+      tagline: "సాంప్రదాయ విజ్ఞానం. రక్షిత భవిష్యత్తు.",
+      healthChecking: "సేవ తనిఖీ చేయబడుతోంది…",
+      healthOk: "సేవ ఆన్‌లైన్‌లో ఉంది",
+      healthDown: "సేవ అందుబాటులో లేదు",
+      jurisdiction: "అధికార పరిధి",
+      jurisdictionIndia: "భారతదేశం",
+      jurisdictionIntl: "అంతర్జాతీయ",
+      formulation: "ఫార్ములేషన్ తరగతి",
+      language: "భాష",
+      autoDetect: "స్వయంచాలక గుర్తింపు",
+      moreIndicPlaceholder: "మరిన్ని భారతీయ భాషలు (22) ▾",
+      chatHint: "ఆయుర్వేద ఉత్పత్తి గురించిన భారతీయ లేదా అంతర్జాతీయ IP / నియంత్రణ ప్రశ్న అడగండి.",
+      classifierHint: "గైడెడ్ ప్రశ్నలకు సమాధానం ఇవ్వండి — వర్గీకరణ మీ ఉత్పత్తిని నియంత్రణ వర్గంలో ఉంచుతుంది.",
+      gisHint: "ఆయుర్వేద భౌగోళిక గుర్తింపులు (GI) మరియు రిమోట్ సెన్సింగ్ నివాస విశ్లేషణ.",
+      graphHint: "ఇంటరాక్టివ్ నాలెడ్జ్ గ్రాఫ్: ఫార్ములేషన్‌లు → చట్టాలు → తీర్పులు → ఒప్పందాలు.",
+      formsHint: "అధికారిక IP India, NBA, FoSCoS మరియు WIPO చట్టబద్ధమైన ఫారమ్‌లు.",
+      auditHint: "డిజిటల్ పర్సనల్ డేటా ప్రొటెక్షన్ యాక్ట్ 2023 కి అనుగుణమైన ఆడిట్ లాగ్.",
+      aboutHint: "IP-SAKTI సహాయక్ ఏమి చేస్తుంది మరియు సురక్షితంగా ఎలా పనిచేస్తుంది.",
+      helpHint: "సహాయకుడిని ఎలా ఉపయోగించాలి మరియు సమాధానాలను ఎలా చదవాలి.",
+      escalateBtn: "మానవ నిపుణుడికి ఎస్కలేట్ చేయండి",
+      voiceInput: "వాయిస్ ఇన్‌పుట్",
+      readAloud: "వినండి",
+      jurisdictionNoteIndia: "భారత అధికార పరిధి — సమాధానాలు భారత చట్టాలకు లోబడి ఉంటాయి.",
+      jurisdictionNoteIntl: "అంతర్జాతీయ అధికార పరిధి — అంతర్జాతీయ మార్గాలు మరియు ఒప్పందాలను మాత్రమే కవర్ చేస్తుంది.",
+      demoTitle: "త్వరిత డెమో దృశ్యాలు",
+      demo1: "క్లాసికల్ పేటెంట్",
+      demo1sub: "క్లాసికల్ ఫార్ములేషన్స్ కోసం సెక్షన్ 3(p) & TKDL",
+      demo2: "ABS / ప్లాంట్ ఆమోదాలు",
+      demo2sub: "మొక్కల ఆధారిత ఉత్పత్తుల కోసం బయోలాజికల్ డైవర్సిటీ యాక్ట్",
+      demo3: "ఫార్ములేషన్ వర్గీకరణ",
+      demo3sub: "గైడెడ్ ప్రశ్నావళి — ఆహారం vs ఔషధం",
+      demo4: "GI రిజిస్ట్రేషన్",
+      demo4sub: "ప్రాంతీయ ఉత్పత్తి కోసం భౌగోళిక సూచిక",
+      demo5: "అంతర్జాతీయ పేటెంట్",
+      demo5sub: "భారతదేశం వెలుపల దాఖలు చేయడానికి PCT మార్గం",
+      welcomeTitle: "నమస్తే. మీ ఆయుర్వేద ఉత్పత్తి విషయంలో నేను ఎలా సహాయపడగలను?",
+      welcomeSub: "ప్రతి సమాధానం విశ్వసనీయ చట్టపరమైన ఆధారాలు మరియు సైటేషన్లతో అందించబడుతుంది.",
+      askPlaceholder: "ఆయుర్వేద IP లేదా నియంత్రణ ప్రశ్న అడగండి…",
+      composerHint: "సమాచారం కోసం మాత్రమే — చట్టపరమైన సలహా కాదు.",
+      answerLabel: "సమాధానం",
+      confidenceLabel: "విశ్వసనీయత",
+      sourcesLabel: "మూలాలు",
+      abstainTitle: "సరిపడా ధృవీకరించబడిన సాక్ష్యం లేదు",
+      abstainNote: "అంచనా వేయడానికి బదులుగా సహాయకుడు నిరాకరిస్తాడు.",
+      openClassifier: "ఫార్ములేషన్ వర్గీకరణను తెరవండి",
+      newChat: "కొత్త సంభాషణ",
+      responseMeta: "ప్రతిస్పందన",
+      noResponseYet: "ఇంకా ప్రతిస్పందన లేదు — వివరాల కోసం ప్రశ్న అడగండి.",
+      specialists: "కనెక్ట్ చేయబడిన నిపుణులు",
+      loading: "లోడ్ అవుతోంది…",
+      sourcesTitle: "మూలాలు & సైటేషన్లు",
+      noSources: "తాజా సమాధాన మూలాలు ఇక్కడ కనిపిస్తాయి.",
+      disclaimerTitle: "నిరాకరణ",
+      disclaimerBody: "IP-SAKTI Sahayak సాధారణ సమాచారాన్ని అందిస్తుంది, చట్టపరమైన సలహా కాదు.",
+      statusAnswered: "సమాధానం ఇవ్వబడింది",
+      statusAbstained: "తిరస్కరించబడింది",
+      statusError: "లోపం",
+      classifierTitle: "ఫార్ములేషన్ వర్గీకరణ",
+      classifyBtn: "వర్గీకరించండి",
+      resetBtn: "రీసెట్ చేయండి",
+      aboutTitle: "IP-SAKTI Sahayak గురించి",
+      helpTitle: "సహాయం",
+    },
+    bn: {
+      brandSub: "আয়ুর্বেদিক আইপি এবং নিয়ন্ত্রক নির্দেশিকার জন্য এআই সহায়ক",
+      navChat: "চ্যাট সহকারী",
+      navClassifier: "ফর্মুলেশন ক্লাসিফায়ার",
+      navGis: "জিআইএস এবং ভূ-উৎস",
+      navGraph: "জ্ঞান গ্রাফ",
+      navForms: "বিধিবদ্ধ ফর্ম",
+      navAudit: "ডিপিডিপি অডিট ট্রেল",
+      navAbout: "সম্পর্কে",
+      navHelp: "সাহায্য",
+      tagline: "ঐতিহ্যবাহী জ্ঞান। সুরক্ষিত ভবিষ্যৎ।",
+      healthChecking: "পরিষেবা পরীক্ষা করা হচ্ছে…",
+      healthOk: "পরিষেবা অনলাইন",
+      healthDown: "পরিষেবা অফলাইন",
+      jurisdiction: "অধিক্ষেত্র",
+      jurisdictionIndia: "ভারত",
+      jurisdictionIntl: "আন্তর্জাতিক",
+      formulation: "ফর্মুলেশন শ্রেণী",
+      language: "ভাষা",
+      autoDetect: "স্বয়ংক্রিয় সনাক্তকরণ",
+      moreIndicPlaceholder: "আরও ভারতীয় ভাষা (22) ▾",
+      chatHint: "আয়ুর্বেদিক পণ্য সম্পর্কিত ভারত বা আন্তর্জাতিক আইপি / নিয়ন্ত্রক প্রশ্ন জিজ্ঞাসা করুন।",
+      classifierHint: "নির্দেশিত প্রশ্নের উত্তর দিন — ক্লাসিফায়ার পণ্যটিকে নিয়ন্ত্রক শ্রেণীতে বিভক্ত করে।",
+      gisHint: "আয়ুর্বেদ ভৌগোলিক ইঙ্গিত (GI) এবং রিমোট সেন্সিং বাসস্থান বিশ্লেষণ।",
+      graphHint: "ইন্টারেক্টিভ জ্ঞান গ্রাফ: ফর্মুলেশন → সংবিধি → মামলা → আন্তর্জাতিক চুক্তি।",
+      formsHint: "অফিসিয়াল আইপি ইন্ডিয়া, এনবিএ, ফসকস এবং ডব্লিউআইপিও ফর্ম ও ফি।",
+      auditHint: "ডিজিটাল ব্যক্তিগত ডেটা সুরক্ষা আইন ২০২৩ অনুবর্তী অডিট ট্রেল।",
+      aboutHint: "IP-SAKTI Sahayak কী করে এবং কীভাবে সুরক্ষিত থাকে।",
+      helpHint: "সহকারী কীভাবে ব্যবহার করবেন এবং উত্তর কীভাবে পড়বেন।",
+      escalateBtn: "বিশেষজ্ঞের কাছে পাঠান",
+      voiceInput: "ভয়েস ইনপুট",
+      readAloud: "শুনুন",
+      jurisdictionNoteIndia: "ভারত অধিক্ষেত্র — উত্তরগুলি ভারতীয় আইনের মধ্যে সীমাবদ্ধ থাকে।",
+      jurisdictionNoteIntl: "আন্তর্জাতিক অধিক্ষেত্র — উত্তরগুলি কেবলমাত্র আন্তর্জাতিক চুক্তি ও রুট কভার করে।",
+      demoTitle: "দ্রুত ডেমো পরিস্থিতি",
+      demo1: "ক্লাসিক্যাল পেটেন্ট",
+      demo1sub: "ক্লাসিক্যাল ফর্মুলেশনের জন্য ধারা 3(p) এবং টিকেডিএল",
+      demo2: "এবিএস / উদ্ভিদ অনুমোদন",
+      demo2sub: "উদ্ভিদজাত পণ্যের জন্য জৈব বৈচিত্র্য আইন পথ",
+      demo3: "ফর্মুলেশন শ্রেণীবিভাগ",
+      demo3sub: "নির্দেশিত প্রশ্নাবলী — খাদ্য বনাম ওষুধ",
+      demo4: "জিআই নিবন্ধন",
+      demo4sub: "অঞ্চল-নির্দিষ্ট পণ্যের জন্য ভৌগোলিক ইঙ্গিত",
+      demo5: "আন্তর্জাতিক পেটেন্ট",
+      demo5sub: "ভারতের বাইরে ফাইল করার জন্য পিসিটি পথ",
+      welcomeTitle: "নমস্কার। আপনার আয়ুর্বেদিক পণ্যে কীভাবে সাহায্য করতে পারি?",
+      welcomeSub: "প্রতিটি উত্তর বাস্তব আইনি উৎসের উদ্ধৃতি সহ যাচাই করে দেওয়া হয়।",
+      askPlaceholder: "একটি আয়ুর্বেদিক আইপি / নিয়ন্ত্রক প্রশ্ন জিজ্ঞাসা করুন…",
+      composerHint: "শুধুমাত্র তথ্যের জন্য — আইনি পরামর্শ নয়।",
+      answerLabel: "উত্তর",
+      confidenceLabel: "আস্থা স্তর",
+      sourcesLabel: "উৎস",
+      abstainTitle: "পর্যাপ্ত যাচাইকৃত প্রমাণ নেই",
+      abstainNote: "অনুমান করার চেয়ে সহকারী উত্তর দিতে অস্বীকৃতি জানায়।",
+      openClassifier: "ফর্মুলেশন ক্লাসিফায়ার খুলুন",
+      newChat: "নতুন কথোপকথন",
+      responseMeta: "প্রতিক্রিয়া",
+      noResponseYet: "এখনও কোনো উত্তর নেই — বিস্তারিত দেখতে প্রশ্ন করুন।",
+      specialists: "সংযুক্ত বিশেষজ্ঞগণ",
+      loading: "লোড হচ্ছে…",
+      sourcesTitle: "উৎস ও উদ্ধৃতি",
+      noSources: "সাম্প্রতিক উত্তরের উদ্ধৃতি এখানে প্রদর্শিত হবে।",
+      disclaimerTitle: "দাবিত্যাগ",
+      disclaimerBody: "IP-SAKTI Sahayak সাধারণ তথ্য সরবরাহ করে, আইনি পরামর্শ নয়।",
+      statusAnswered: "উত্তর দেওয়া হয়েছে",
+      statusAbstained: "অস্বীকৃত",
+      statusError: "ত্রুটি",
+      classifierTitle: "ফর্মুলেশন ক্লাসিফায়ার",
+      classifyBtn: "শ্রেণীবদ্ধ করুন",
+      resetBtn: "রিসেট",
+      aboutTitle: "IP-SAKTI Sahayak সম্পর্কে",
+      helpTitle: "সাহায্য",
+    },
+    mr: {
+      brandSub: "आयुर्वेदिक IP व नियामक मार्गदर्शनासाठी AI सहाय्यक",
+      navChat: "चॅट सहाय्यक",
+      navClassifier: "फॉर्म्युलेशन वर्गीकरण",
+      navGis: "जीआयएस आणि भू-मूळ",
+      navGraph: "ज्ञान आलेख",
+      navForms: "वैधानिक अर्ज",
+      navAudit: "DPDP ऑडिट ट्रेल",
+      navAbout: "माहिती",
+      navHelp: "मदत",
+      tagline: "पारंपारिक ज्ञान. सुरक्षित भविष्य.",
+      healthChecking: "सेवा तपासत आहे…",
+      healthOk: "सेवा ऑनलाइन आहे",
+      healthDown: "सेवा ऑफलाइन आहे",
+      jurisdiction: "अधिकारक्षेत्र",
+      jurisdictionIndia: "भारत",
+      jurisdictionIntl: "आंतरराष्ट्रीय",
+      formulation: "फॉर्म्युलेशन वर्ग",
+      language: "भाषा",
+      autoDetect: "स्वयं शोध",
+      moreIndicPlaceholder: "अधिक भारतीय भाषा (22) ▾",
+      chatHint: "आयुर्वेदिक उत्पादनासंबंधी भारत किंवा आंतरराष्ट्रीय IP / नियामक प्रश्न विचारा.",
+      classifierHint: "प्रश्नांची उत्तरे द्या — क्लासिफायर उत्पादन नियामक श्रेणीत वर्गीकृत करतो.",
+      gisHint: "आयुर्वेद भौगोलिक निर्देशांक (GI) व रिमोट सेन्सिंग विश्लेषण.",
+      graphHint: "परस्परसंबंधित ज्ञान आलेख: फॉर्म्युलेशन्स → कायदे → खटले → करार.",
+      formsHint: "अधिकृत IP India, NBA, FoSCoS आणि WIPO वैधानिक अर्ज.",
+      auditHint: "DPDP कायदा २०२३ शी सुसंगत ऑडिट ट्रेल.",
+      aboutHint: "IP-SAKTI सहाय्यक काय करतो व कसा सुरक्षित राहतो.",
+      helpHint: "सहाय्यक कसा वापरावा व उत्तरे कशी वाचावीत.",
+      escalateBtn: "मानव तज्ज्ञाकडे वर्ग करा",
+      voiceInput: "आवाजाने बोला",
+      readAloud: "ऐका",
+      jurisdictionNoteIndia: "भारत अधिकारक्षेत्र — उत्तरे केवळ भारतीय कायद्याच्या चौकटीत राहतात.",
+      jurisdictionNoteIntl: "आंतरराष्ट्रीय अधिकारक्षेत्र — उत्तरे आंतरराष्ट्रीय करार व मार्गांवर आधारित असतात.",
+      demoTitle: "जलद डेमो परिस्थिती",
+      demo1: "क्लासिकल पेटंट",
+      demo1sub: "क्लासिकल फॉर्म्युलेशन्ससाठी कलम 3(p) व TKDL",
+      demo2: "ABS / वनस्पती मंजुरी",
+      demo2sub: "वनस्पती उत्पादनांसाठी जैविक विविधता कायदा मार्ग",
+      demo3: "फॉर्म्युलेशन वर्गीकरण",
+      demo3sub: "मार्गदर्शित प्रश्नावली — अन्न की औषध",
+      demo4: "GI नोंदणी",
+      demo4sub: "विशिष्ट क्षेत्रातील उत्पादनासाठी भौगोलिक मानांकन",
+      demo5: "आंतरराष्ट्रीय पेटंट",
+      demo5sub: "भारताबाहेर अर्ज करण्यासाठी PCT मार्ग",
+      welcomeTitle: "नमस्ते. मी आपल्या आयुर्वेदिक उत्पादनाबाबत कशी मदत करू शकतो?",
+      welcomeSub: "प्रत्येक उत्तर अधिकृत कायदेशीर संदर्भांसह अचूकपणे दिले जाते.",
+      askPlaceholder: "आयुर्वेदिक IP किंवा नियामक प्रश्न विचारा…",
+      composerHint: "केवळ माहितीसाठी — कायदेशीर सल्ला नाही.",
+      answerLabel: "उत्तर",
+      confidenceLabel: "विश्वास पातळी",
+      sourcesLabel: "स्रोत",
+      abstainTitle: "पुरेसे सत्यापित पुरावे नाहीत",
+      abstainNote: "अंदाज बांधण्याऐवजी सहाय्यक उत्तर देण्यास नकार देतो.",
+      openClassifier: "फॉर्म्युलेशन वर्गीकरण उघडा",
+      newChat: "नवीन संभाषण",
+      responseMeta: "प्रतिसाद",
+      noResponseYet: "अद्याप कोणताही प्रतिसाद नाही — प्रश्न विचारा.",
+      specialists: "जोडलेले तज्ज्ञ",
+      loading: "लोड होत आहे…",
+      sourcesTitle: "स्रोत आणि संदर्भ",
+      noSources: "ताज्या उत्तराचे संदर्भ येथे दिसतील.",
+      disclaimerTitle: "अस्वीकरण",
+      disclaimerBody: "IP-SAKTI Sahayak सामान्य माहिती पुरवतो, कायदेशीर सल्ला नाही.",
+      statusAnswered: "उत्तर दिले",
+      statusAbstained: "नकार दिला",
+      statusError: "त्रुटी",
+      classifierTitle: "फॉर्म्युलेशन वर्गीकरण",
+      classifyBtn: "वर्गीकृत करा",
+      resetBtn: "रीसेट",
+      aboutTitle: "IP-SAKTI Sahayak बद्दल",
+      helpTitle: "मदत",
+    },
+    gu: {
+      brandSub: "આયુર્વેદિક IP અને નિયમનકારી માર્ગદર્શન માટે AI સહાયક",
+      navChat: "ચેટ સહાયક",
+      navClassifier: "ફોર્મ્યુલેશન વર્ગીકરણ",
+      navGis: "જીઆઈએસ અને ભૂ-ઉદ્ભવ",
+      navGraph: "જ્ઞાન આલેખ",
+      navForms: "વૈધાનિક ફોર્મ",
+      navAudit: "DPDP ઑડિટ ટ્રેઇલ",
+      navAbout: "વિશે",
+      navHelp: "મદદ",
+      tagline: "પરંપરાગત જ્ઞાન. સુરક્ષિત ભવિષ્ય.",
+      healthChecking: "સેવા તપાસી રહ્યા છીએ…",
+      healthOk: "સેવા ઓનલાઇન છે",
+      healthDown: "સેવા ઉપલબ્ધ નથી",
+      jurisdiction: "અધિકારક્ષેત્ર",
+      jurisdictionIndia: "ભારત",
+      jurisdictionIntl: "આંતરરાષ્ટ્રીય",
+      formulation: "ફોર્મ્યુલેશન વર્ગ",
+      language: "ભાષા",
+      autoDetect: "સ્વતઃ ઓળખ",
+      moreIndicPlaceholder: "વધુ ભારતીય ભાષાઓ (22) ▾",
+      chatHint: "આયુર્વેદિક ઉત્પાદન અંગે ભારત કે આંતરરાષ્ટ્રીય IP / નિયમનકારી પ્રશ્ન પૂછો.",
+      classifierHint: "માર્ગદર્શિત પ્રશ્નોના ઉત્તર આપો — વર્ગીકરણ તમારા ઉત્પાદનને યોગ્ય શ્રેણીમાં મૂકે છે.",
+      gisHint: "આયુર્વેદ ભૌગોલિક સંકેત (GI) અને ઉપગ્રહ પર્યાવરણ વિશ્લેષણ.",
+      graphHint: "ઇન્ટરેક્ટિવ નોલેજ ગ્રાફ: ફોર્મ્યુલેશન → કાયદા → કેસ લો → સંધિઓ.",
+      formsHint: "સત્તાવાર IP India, NBA, FoSCoS અને WIPO ફોર્મ્સ.",
+      auditHint: "DPDP અધિનિયમ ૨૦૨૩ અનુરૂપ ઑડિટ લૉગ.",
+      aboutHint: "IP-SAKTI સહાયક શું કરે છે અને કઈ રીતે કાર્ય કરે છે.",
+      helpHint: "સહાયકનો ઉપયોગ કેવી રીતે કરવો અને ઉત્તરો કેવી રીતે વાંચવા.",
+      escalateBtn: "નિષ્ણાતને સોંપો",
+      voiceInput: "અવાજ દ્વારા ઇનપુટ",
+      readAloud: "સાંભળો",
+      jurisdictionNoteIndia: "ભારત અધિકારક્ષેત્ર — જવાબો ભારતીય કાયદા અનુસાર રહે છે.",
+      jurisdictionNoteIntl: "આંતરરાષ્ટ્રીય અધિકારક્ષેત્ર — માત્ર આંતરરાષ્ટ્રીય સંધિઓ અને માર્ગો.",
+      demoTitle: "ઝડપી ડેમો દૃશ્યો",
+      demo1: "ક્લાસિકલ પેટન્ટ",
+      demo1sub: "ક્લાસિકલ ફોર્મ્યુલેશન્સ માટે કલમ 3(p) અને TKDL",
+      demo2: "ABS / વનસ્પતિ મંજૂરી",
+      demo2sub: "વનસ્પતિ આધારિત ઉત્પાદનો માટે જૈવ વિવિધતા અધિનિયમ",
+      demo3: "ફોર્મ્યુલેશન વર્ગીકરણ",
+      demo3sub: "માર્ગદર્શિત પ્રશ્નાવલી — આહાર વિરુદ્ધ દવા",
+      demo4: "GI નોંધણી",
+      demo4sub: "પ્રાદેશિક ઉત્પાદન માટે ભૌગોલિક સંકેત",
+      demo5: "આંતરરાષ્ટ્રીય પેટન્ટ",
+      demo5sub: "ભારત બહાર અરજી કરવા માટે PCT માર્ગ",
+      welcomeTitle: "નમસ્તે. તમારા આયુર્વેદિક ઉત્પાદન બાબતે હું કેવી રીતે મદદ કરી શકું?",
+      welcomeSub: "દરેક ઉત્તર વાસ્તવિક કાયદાકીય સ્ત્રોતો અને સંદર્ભો પર આધારિત છે.",
+      askPlaceholder: "આયુર્વેદિક IP અથવા નિયમનકારી પ્રશ્ન પૂછો…",
+      composerHint: "માત્ર માહિતી માટે — કાનૂની સલાહ નથી.",
+      answerLabel: "જવાબ",
+      confidenceLabel: "વિશ્વાસ સ્તર",
+      sourcesLabel: "સ્ત્રોત",
+      abstainTitle: "પૂરતા પ્રમાણિત પુરાવા નથી",
+      abstainNote: "અનુમાન લગાવવાને બદલે સહાયક ઇનકાર કરે છે.",
+      openClassifier: "ફોર્મ્યુલેશન વર્ગીકરણ ખોલો",
+      newChat: "નવી વાતચીત",
+      responseMeta: "પ્રતિસાદ",
+      noResponseYet: "હજી કોઈ જવાબ નથી — વિગતો જોવા પ્રશ્ન પૂછો.",
+      specialists: "જોડાયેલા નિષ્ણાતો",
+      loading: "લોડ થઈ રહ્યું છે…",
+      sourcesTitle: "સ્ત્રોતો અને સંદર્ભો",
+      noSources: "નવીનતમ જવાબના સ્ત્રોતો અહીં દેખાશે.",
+      disclaimerTitle: "અસ્વીકરણ",
+      disclaimerBody: "IP-SAKTI Sahayak સામાન્ય માહિતી પૂરી પાડે છે, કાનૂની સલાહ નહીં.",
+      statusAnswered: "જવાબ આપ્યો",
+      statusAbstained: "નકાર્યો",
+      statusError: "ભૂલ",
+      classifierTitle: "ફોર્મ્યુલેશન વર્ગીકરણ",
+      classifyBtn: "વર્ગીકૃત કરો",
+      resetBtn: "રીસેટ",
+      aboutTitle: "IP-SAKTI Sahayak વિશે",
+      helpTitle: "મદદ",
+    },
+    kn: {
+      brandSub: "ಆಯುರ್ವೇದ ಐಪಿ ಮತ್ತು ನಿಯಂತ್ರಕ ಮಾರ್ಗದರ್ಶನಕ್ಕಾಗಿ AI ಸಹಾಯಕ",
+      navChat: "ಚಾಟ್ ಸಹಾಯಕ",
+      navClassifier: "ಸೂತ್ರೀಕರಣ ವರ್ಗೀಕರಣ",
+      navGis: "ಜಿಐಎಸ್ ಮತ್ತು ಭೌಗೋಳಿಕ-ಮೂಲ",
+      navGraph: "ಜ್ಞಾನ ಗ್ರಾಫ್",
+      navForms: "ಶಾಸನಬದ್ಧ ನಮೂನೆಗಳು",
+      navAudit: "DPDP ಆಡಿಟ್ ಟ್ರಯಲ್",
+      navAbout: "ಬಗ್ಗೆ",
+      navHelp: "ಸಹಾಯ",
+      tagline: "ಸಾಂಪ್ರದಾಯಿಕ ಜ್ಞಾನ. ಸಂರಕ್ಷಿತ ಭವಿಷ್ಯ.",
+      healthChecking: "ಸೇವೆಯನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…",
+      healthOk: "ಸೇವೆ ಆನ್‌ಲೈನ್‌ನಲ್ಲಿದೆ",
+      healthDown: "ಸೇವೆ ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿದೆ",
+      jurisdiction: "ನ್ಯಾಯವ್ಯಾಪ್ತಿ",
+      jurisdictionIndia: "ಭಾರತ",
+      jurisdictionIntl: "ಅಂತರರಾಷ್ಟ್ರೀಯ",
+      formulation: "ಸೂತ್ರೀಕರಣ ವರ್ಗ",
+      language: "ಭಾಷೆ",
+      autoDetect: "ಸ್ವಯಂ ಪತ್ತೆ",
+      moreIndicPlaceholder: "ಇನ್ನಷ್ಟು ಭಾರತೀಯ ಭಾಷೆಗಳು (22) ▾",
+      chatHint: "ಆಯುರ್ವೇದ ಉತ್ಪನ್ನದ ಬಗ್ಗೆ ಭಾರತ ಅಥವಾ ಅಂತರರಾಷ್ಟ್ರೀಯ ಐಪಿ / ನಿಯಂತ್ರಕ ಪ್ರಶ್ನೆ ಕೇಳಿ.",
+      classifierHint: "ಮಾರ್ಗದರ್ಶಿ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ — ವರ್ಗೀಕರಣವು ನಿಯಂತ್ರಕ ವರ್ಗವನ್ನು ನಿರ್ಧರಿಸುತ್ತದೆ.",
+      gisHint: "ಆಯುರ್ವೇದ ಭೌಗೋಳಿಕ ಸೂಚಕಗಳು (GI) ಮತ್ತು ಆವಾಸಸ್ಥಾನ ವಿಶ್ಲೇಷಣೆ.",
+      graphHint: "ಜ್ಞಾನ ಗ್ರಾಫ್: ಸೂತ್ರೀಕರಣಗಳು → ಕಾಯ್ದೆಗಳು → ತೀರ್ಪುಗಳು → ಒಪ್ಪಂದಗಳು.",
+      formsHint: "ಅಧಿಕೃತ IP India, NBA, FoSCoS ಮತ್ತು WIPO ನಮೂನೆಗಳು.",
+      auditHint: "DPDP ಕಾಯ್ದೆ 2023 ರ ಆಡಿಟ್ ಟ್ರಯಲ್.",
+      aboutHint: "IP-SAKTI Sahayak ಏನು ಮಾಡುತ್ತದೆ ಮತ್ತು ಹೇಗೆ ಸುರಕ್ಷಿತವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ.",
+      helpHint: "ಸಹಾಯಕನನ್ನು ಹೇಗೆ ಬಳಸುವುದು ಮತ್ತು ಉತ್ತರಗಳನ್ನು ಓದುವುದು ಹೇಗೆ.",
+      escalateBtn: "ಮಾನವ ತಜ್ಞರಿಗೆ ವರ್ಗಾಯಿಸಿ",
+      voiceInput: "ಧ್ವನಿ ಇನ್‌ಪುಟ್",
+      readAloud: "ಕೇಳಿ",
+      jurisdictionNoteIndia: "ಭಾರತ ನ್ಯಾಯವ್ಯಾಪ್ತಿ — ಉತ್ತರಗಳು ಭಾರತೀಯ ಕಾನೂನಿನ ಚೌಕಟ್ಟಿನಲ್ಲಿರುತ್ತವೆ.",
+      jurisdictionNoteIntl: "ಅಂತರರಾಷ್ಟ್ರೀಯ ನ್ಯಾಯವ್ಯಾಪ್ತಿ — ಕೇವಲ ಒಪ್ಪಂದಗಳು ಮತ್ತು ಅಂತರರಾಷ್ಟ್ರೀಯ ಮಾರ್ಗಗಳು.",
+      demoTitle: "ತ್ವರಿತ ಡೆಮೊ ಸನ್ನಿವೇಶಗಳು",
+      demo1: "ಶಾಸ್ತ್ರೀಯ ಪೇಟೆಂಟ್",
+      demo1sub: "ಶಾಸ್ತ್ರೀಯ ಸೂತ್ರೀಕರಣಗಳಿಗಾಗಿ ಸೆಕ್ಷನ್ 3(p) ಮತ್ತು TKDL",
+      demo2: "ABS / ಸಸ್ಯ ಅನುಮೋದನೆಗಳು",
+      demo2sub: "ಸಸ್ಯ ಆಧಾರಿತ ಉತ್ಪನ್ನಗಳಿಗಾಗಿ ಜೈವಿಕ ವೈವಿಧ್ಯತೆ ಕಾಯ್ದೆ",
+      demo3: "ಸೂತ್ರೀಕರಣ ವರ್ಗೀಕರಣ",
+      demo3sub: "ಮಾರ್ಗದರ್ಶಿ ಪ್ರಶ್ನಾವಳಿ — ಆಹಾರ vs ಔಷಧ",
+      demo4: "GI ನೋಂದಣಿ",
+      demo4sub: "ಪ್ರಾದೇಶಿಕ ಉತ್ಪನ್ನಕ್ಕಾಗಿ ಭೌಗೋಳಿಕ ಸೂಚಕ",
+      demo5: "ಅಂತರರಾಷ್ಟ್ರೀಯ ಪೇಟೆಂಟ್",
+      demo5sub: "ಭಾರತದ ಹೊರಗೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಲು PCT ಮಾರ್ಗ",
+      welcomeTitle: "ನಮಸ್ಕಾರ. ನಿಮ್ಮ ಆಯುರ್ವೇದ ಉತ್ಪನ್ನಕ್ಕೆ ನಾನು ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?",
+      welcomeSub: "ಪ್ರತಿಯೊಂದು ಉತ್ತರವು ನೈಜ ಕಾನೂನು ಮೂಲಗಳು ಮತ್ತು ಉಲ್ಲೇಖಗಳ ಮೇಲೆ ಆಧಾರಿತವಾಗಿದೆ.",
+      askPlaceholder: "ಆಯುರ್ವೇದ ಐಪಿ ಅಥವಾ ನಿಯಂತ್ರಕ ಪ್ರಶ್ನೆ ಕೇಳಿ…",
+      composerHint: "ಮಾಹಿತಿಗಾಗಿ ಮಾತ್ರ — ಕಾನೂನು ಸಲಹೆಯಲ್ಲ.",
+      answerLabel: "ಉತ್ತರ",
+      confidenceLabel: "ವಿಶ್ವಾಸಾರ್ಹತೆ",
+      sourcesLabel: "ಮೂಲಗಳು",
+      abstainTitle: "ಸಾಕಷ್ಟು ಪರಿಶೀಲಿಸಿದ ಪುರಾವೆಗಳಿಲ್ಲ",
+      abstainNote: "ಊಹಿಸುವ ಬದಲು ಸಹಾಯಕ ಉತ್ತರಿಸಲು ನಿರಾಕರಿಸುತ್ತಾನೆ.",
+      openClassifier: "ಸೂತ್ರೀಕರಣ ವರ್ಗೀಕರಣವನ್ನು ತೆರೆಯಿರಿ",
+      newChat: "ಹೊಸ ಸಂಭಾಷಣೆ",
+      responseMeta: "ಪ್ರತಿಕ್ರಿಯೆ",
+      noResponseYet: "ಇನ್ನೂ ಯಾವುದೇ ಉತ್ತರವಿಲ್ಲ — ವಿವರಗಳಿಗಾಗಿ ಪ್ರಶ್ನೆ ಕೇಳಿ.",
+      specialists: "ಸಂಪರ್ಕಿತ ತಜ್ಞರು",
+      loading: "ಲೋಡ್ ಆಗುತ್ತಿದೆ…",
+      sourcesTitle: "ಮೂಲಗಳು & ಉಲ್ಲೇಖಗಳು",
+      noSources: "ಇತ್ತೀಚಿನ ಉತ್ತರದ ಉಲ್ಲೇಖಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.",
+      disclaimerTitle: "ಹಕ್ಕುತ್ಯಾಗ",
+      disclaimerBody: "IP-SAKTI Sahayak ಸಾಮಾನ್ಯ ಮಾಹಿತಿಯನ್ನು ಒದಗಿಸುತ್ತದೆ, ಕಾನೂನು ಸಲಹೆಯಲ್ಲ.",
+      statusAnswered: "ಉತ್ತರಿಸಲಾಗಿದೆ",
+      statusAbstained: "ನಿರಾಕರಿಸಲಾಗಿದೆ",
+      statusError: "ದೋಷ",
+      classifierTitle: "ಸೂತ್ರೀಕರಣ ವರ್ಗೀಕರಣ",
+      classifyBtn: "ವರ್ಗೀಕರಿಸಿ",
+      resetBtn: "ಮರುಹೊಂದಿಸಿ",
+      aboutTitle: "IP-SAKTI Sahayak ಬಗ್ಗೆ",
+      helpTitle: "ಸಹಾಯ",
+    },
+    ml: {
+      brandSub: "ആയുർവേദ ഐപി & റെഗുലേറ്ററി മാർഗ്ഗനിർദ്ദേശത്തിനുള്ള AI സഹായി",
+      navChat: "ചാറ്റ് അസിസ്റ്റന്റ്",
+      navClassifier: "ഫോർമുലേഷൻ ക്ലാസിഫയർ",
+      navGis: "ജിഐഎസ് & ഭൂ-ഉറവിടം",
+      navGraph: "നോളജ് ഗ്രാഫ്",
+      navForms: "നിയമപരമായ ഫോമുകൾ",
+      navAudit: "ഡിപിഡിപി ഓഡിറ്റ് ട്രയൽ",
+      navAbout: "വിവരണം",
+      navHelp: "സഹായം",
+      tagline: "പരമ്പരാഗത അറിവ്. സുരക്ഷിത ഭാവി.",
+      healthChecking: "സേവനം പരിശോധിക്കുന്നു…",
+      healthOk: "സേവനം ഓൺലൈനിലാണ്",
+      healthDown: "സേവനം ലഭ്യമല്ല",
+      jurisdiction: "അധികാരപരിധി",
+      jurisdictionIndia: "ഇന്ത്യ",
+      jurisdictionIntl: "അന്താരാഷ്ട്രം",
+      formulation: "ഫോർമുലേഷൻ തരം",
+      language: "ഭാഷ",
+      autoDetect: "സ്വയം കണ്ടെത്തൽ",
+      moreIndicPlaceholder: "കൂടുതൽ ഇന്ത്യൻ ഭാഷകൾ (22) ▾",
+      chatHint: "ആയുർവേദ ഉൽപ്പന്നത്തെക്കുറിച്ചുള്ള ഇന്ത്യ അല്ലെങ്കിൽ അന്താരാഷ്ട്ര ഐപി / നിയന്ത്രണ ചോദ്യം ചോദിക്കുക.",
+      classifierHint: "ചോദ്യങ്ങൾക്ക് ഉത്തരം നൽകുക — ക്ലാസിഫയർ നിങ്ങളുടെ ഉൽപ്പന്നത്തെ തരംതിരിക്കുന്നു.",
+      gisHint: "ആയുർവേദ ഭൂമിശാസ്ത്ര സൂചികകളും (GI) പരിസ്ഥിതി വിശകലനവും.",
+      graphHint: "നോളജ് ഗ്രാഫ്: ഫോർമുലേഷനുകൾ → നിയമങ്ങൾ → വിധികൾ → കരാറുകൾ.",
+      formsHint: "ഔദ്യോഗിക IP India, NBA, FoSCoS, WIPO ഫോമുകൾ.",
+      auditHint: "ഡിപിഡിപി നിയമം 2023 പ്രകാരമുള്ള ഓഡിറ്റ് ട്രയൽ.",
+      aboutHint: "IP-SAKTI Sahayak എന്തുചെയ്യുന്നു, എങ്ങനെ സുരക്ഷിതമായി പ്രവർത്തിക്കുന്നു.",
+      helpHint: "സഹായി എങ്ങനെ ഉപയോഗിക്കാം, ഉത്തരങ്ങൾ എങ്ങനെ വായിക്കാം.",
+      escalateBtn: "വിദഗ്ദ്ധന് കൈമാറുക",
+      voiceInput: "ശബ്ദ ഇൻപുട്ട്",
+      readAloud: "കേൾക്കുക",
+      jurisdictionNoteIndia: "ഇന്ത്യൻ അധികാരപരിധി — ഉത്തരങ്ങൾ ഇന്ത്യൻ നിയമപരിധിയിൽ മാത്രമായിരിക്കും.",
+      jurisdictionNoteIntl: "അന്താരാഷ്ട്ര അധികാരപരിധി — അന്താരാഷ്ട്ര ഉടമ്പടികളും അപേക്ഷാ വഴികളും മാത്രം.",
+      demoTitle: "ഡെമോ സാഹചര്യങ്ങൾ",
+      demo1: "ക്ലാസിക്കൽ പേറ്റന്റ്",
+      demo1sub: "ക്ലാസിക്കൽ ഫോർമുലേഷനുകൾക്കായി സെക്ഷൻ 3(p) & TKDL",
+      demo2: "എബിഎസ് / സസ്യ അനുമതികൾ",
+      demo2sub: "സസ്യ ഉൽപ്പന്നങ്ങൾക്കായുള്ള ജൈവവൈവിധ്യ നിയമം",
+      demo3: "ഫോർമുലേഷൻ വർഗ്ഗീകരണം",
+      demo3sub: "ചോദ്യാവലി — ഭക്ഷണം vs മരുന്ന്",
+      demo4: "ജിഐ രജിസ്ട്രേഷൻ",
+      demo4sub: "പ്രദേശിക ഉൽപ്പന്നത്തിനായുള്ള ഭൂമിശാസ്ത്ര സൂചിക",
+      demo5: "അന്താരാഷ്ട്ര പേറ്റന്റ്",
+      demo5sub: "ഇന്ത്യക്ക് പുറത്ത് അപേക്ഷിക്കാനുള്ള പിസിടി വഴി",
+      welcomeTitle: "നമസ്കാരം. നിങ്ങളുടെ ആയുർവേദ ഉൽപ്പന്നത്തിൽ എനിക്ക് എങ്ങനെ സഹായിക്കാനാകും?",
+      welcomeSub: "ഓരോ ഉത്തരവും ആധികാരിക നിയമ സ്രോതസ്സുകളുടെ അടിസ്ഥാനത്തിലാണ് നൽകുന്നത്.",
+      askPlaceholder: "ആയുർവേദ ഐപി അല്ലെങ്കിൽ നിയന്ത്രണ ചോദ്യം ചോദിക്കുക…",
+      composerHint: "വിവരങ്ങൾക്ക് മാത്രം — നിയമോപദേശമല്ല.",
+      answerLabel: "ഉത്തരം",
+      confidenceLabel: "വിശ്വാസ്യത",
+      sourcesLabel: "ഉറവിടങ്ങൾ",
+      abstainTitle: "മതിയായ സ്ഥിരീകരിച്ച തെളിവുകളില്ല",
+      abstainNote: "ഊഹിക്കുന്നതിനുപകരം സഹായി ഉത്തരം നൽകാൻ വിസമ്മതിക്കുന്നു.",
+      openClassifier: "ഫോർമുലേഷൻ ക്ലാസിഫയർ തുറക്കുക",
+      newChat: "പുതിയ സംഭാഷണം",
+      responseMeta: "പ്രതികരണം",
+      noResponseYet: "ഇതുവരെ ഉത്തരമില്ല — ചോദ്യം ചോദിക്കുക.",
+      specialists: "ബന്ധിപ്പിച്ച വിദഗ്ദ്ധർ",
+      loading: "ലോഡ് ചെയ്യുന്നു…",
+      sourcesTitle: "ഉറവിടങ്ങളും പരാമർശങ്ങളും",
+      noSources: "ഉത്തരത്തിന്റെ ഉറവിടങ്ങൾ ഇവിടെ ദൃശ്യമാകും.",
+      disclaimerTitle: "നിരാകരണം",
+      disclaimerBody: "IP-SAKTI Sahayak പൊതുവായ വിവരങ്ങൾ നൽകുന്നു, നിയമോപദേശമല്ല.",
+      statusAnswered: "ഉത്തരം നൽകി",
+      statusAbstained: "നിരസിച്ചു",
+      statusError: "പിശക്",
+      classifierTitle: "ഫോർമുലേഷൻ ക്ലാസിഫയർ",
+      classifyBtn: "തരംതിരിക്കുക",
+      resetBtn: "പുനഃക്രമീകരിക്കുക",
+      aboutTitle: "IP-SAKTI Sahayak-നെക്കുറിച്ച്",
+      helpTitle: "സഹായം",
+    },
+    pa: {
+      brandSub: "ਆਯੁਰਵੈਦਿਕ IP ਅਤੇ ਰੈਗੂਲੇਟਰੀ ਮਾਰਗਦਰਸ਼ਨ ਲਈ AI ਸਹਾਇਕ",
+      navChat: "ਚੈਟ ਸਹਾਇਕ",
+      navClassifier: "ਫਾਰਮੂਲੇਸ਼ਨ ਵਰਗੀਕਰਨ",
+      navGis: "ਜੀਆਈਐਸ ਅਤੇ ਭੂ-ਮੂਲ",
+      navGraph: "ਗਿਆਨ ਗ੍ਰਾਫ਼",
+      navForms: "ਕਾਨੂੰਨੀ ਫਾਰਮ",
+      navAudit: "ਡੀਪੀਡੀਪੀ ਆਡਿਟ ਟ੍ਰੇਲ",
+      navAbout: "ਬਾਰੇ",
+      navHelp: "ਮਦਦ",
+      tagline: "ਰਵਾਇਤੀ ਗਿਆਨ। ਸੁਰੱਖਿਅਤ ਭਵਿੱਖ।",
+      healthChecking: "ਸੇਵਾ ਜਾਂਚੀ ਜਾ ਰਹੀ ਹੈ…",
+      healthOk: "ਸੇਵਾ ਆਨਲਾਈਨ ਹੈ",
+      healthDown: "ਸੇਵਾ ਆਫਲਾਈਨ ਹੈ",
+      jurisdiction: "ਅਧਿਕਾਰ ਖੇਤਰ",
+      jurisdictionIndia: "ਭਾਰਤ",
+      jurisdictionIntl: "ਅੰਤਰਰਾਸ਼ਟਰੀ",
+      formulation: "ਫਾਰਮੂਲੇਸ਼ਨ ਸ਼੍ਰੇਣੀ",
+      language: "ਭਾਸ਼ਾ",
+      autoDetect: "ਸਵੈ-ਖੋਜ",
+      moreIndicPlaceholder: "ਹੋਰ ਭਾਰਤੀ ਭਾਸ਼ਾਵਾਂ (22) ▾",
+      chatHint: "ਆਯੁਰਵੈਦਿਕ ਉਤਪਾਦ ਬਾਰੇ ਭਾਰਤ ਜਾਂ ਅੰਤਰਰਾਸ਼ਟਰੀ IP / ਰੈਗੂਲੇਟਰੀ ਸਵਾਲ ਪੁੱਛੋ।",
+      classifierHint: "ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦਿਓ — ਕਲਾਸੀਫਾਇਰ ਉਤਪਾਦ ਨੂੰ ਰੈਗੂਲੇਟਰੀ ਸ਼੍ਰੇਣੀ ਵਿੱਚ ਰੱਖਦਾ ਹੈ।",
+      gisHint: "ਆਯੁਰਵੈਦ ਭੂਗੋਲਿਕ ਸੰਕੇਤ (GI) ਅਤੇ ਰਿਮੋਟ ਸੈਂਸਿੰਗ ਵਿਸ਼ਲੇਸ਼ਣ।",
+      graphHint: "ਗਿਆਨ ਗ੍ਰਾਫ਼: ਫਾਰਮੂਲੇਸ਼ਨ → ਕਾਨੂੰਨ → ਫੈਸਲੇ → ਸੰਧੀਆਂ।",
+      formsHint: "ਸਰਕਾਰੀ IP India, NBA, FoSCoS ਅਤੇ WIPO ਫਾਰਮ।",
+      auditHint: "DPDP ਐਕਟ 2023 ਅਧੀਨ ਆਡਿਟ ਟ੍ਰੇਲ।",
+      aboutHint: "IP-SAKTI ਸਹਾਇਕ ਕੀ ਕਰਦਾ ਹੈ ਅਤੇ ਕਿਵੇਂ ਕੰਮ ਕਰਦਾ ਹੈ।",
+      helpHint: "ਸਹਾਇਕ ਦੀ ਵਰਤੋਂ ਕਿਵੇਂ ਕਰਨੀ ਹੈ।",
+      escalateBtn: "ਮਾਹਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
+      voiceInput: "ਆਵਾਜ਼ ਰਾਹੀਂ ਬੋਲੋ",
+      readAloud: "ਸੁਣੋ",
+      jurisdictionNoteIndia: "ਭਾਰਤ ਅਧਿਕਾਰ ਖੇਤਰ — ਜਵਾਬ ਸਿਰਫ਼ ਭਾਰਤੀ ਕਾਨੂੰਨ ਤੱਕ ਸੀਮਿਤ ਹਨ।",
+      jurisdictionNoteIntl: "ਅੰਤਰਰਾਸ਼ਟਰੀ ਅਧਿਕਾਰ ਖੇਤਰ — ਅੰਤਰਰਾਸ਼ਟਰੀ ਸੰਧੀਆਂ ਅਤੇ ਰਸਤੇ।",
+      demoTitle: "ਡੈਮੋ ਸਥਿਤੀਆਂ",
+      demo1: "ਕਲਾਸੀਕਲ ਪੇਟੈਂਟ",
+      demo1sub: "ਕਲਾਸੀਕਲ ਫਾਰਮੂਲੇਸ਼ਨਾਂ ਲਈ ਸੈਕਸ਼ਨ 3(p) ਅਤੇ TKDL",
+      demo2: "ABS / ਪੌਦਾ ਪ੍ਰਵਾਨਗੀਆਂ",
+      demo2sub: "ਪੌਦਾ ਉਤਪਾਦਾਂ ਲਈ ਜੈਵਿਕ ਵਿਭਿੰਨਤਾ ਐਕਟ",
+      demo3: "ਫਾਰਮੂਲੇਸ਼ਨ ਵਰਗੀਕਰਨ",
+      demo3sub: "ਪ੍ਰਸ਼ਨਾਵਲੀ — ਭੋਜਨ ਬਨਾਮ ਦਵਾਈ",
+      demo4: "GI ਰਜਿਸਟ੍ਰੇਸ਼ਨ",
+      demo4sub: "ਖੇਤਰੀ ਉਤਪਾਦ ਲਈ ਭੂਗੋਲਿਕ ਸੰਕੇਤ",
+      demo5: "ਅੰਤਰਰਾਸ਼ਟਰੀ ਪੇਟੈਂਟ",
+      demo5sub: "ਭਾਰਤ ਤੋਂ ਬਾਹਰ ਦਾਇਰ ਕਰਨ ਲਈ PCT ਮਾਰਗ",
+      welcomeTitle: "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ। ਤੁਹਾਡੇ ਆਯੁਰਵੈਦਿਕ ਉਤਪਾਦ ਲਈ ਕਿਵੇਂ ਮਦਦ ਕਰ ਸਕਦਾ ਹਾਂ?",
+      welcomeSub: "ਹਰ ਜਵਾਬ ਅਸਲ ਕਾਨੂੰਨੀ ਸਰੋਤਾਂ ਅਤੇ ਹਵਾਲਿਆਂ 'ਤੇ ਆਧਾਰਿਤ ਹੁੰਦਾ ਹੈ।",
+      askPlaceholder: "ਆਯੁਰਵੈਦਿਕ IP ਜਾਂ ਰੈਗੂਲੇਟਰੀ ਸਵਾਲ ਪੁੱਛੋ…",
+      composerHint: "ਸਿਰਫ਼ ਜਾਣਕਾਰੀ ਲਈ — ਕਾਨੂੰਨੀ ਸਲਾਹ ਨਹੀਂ।",
+      answerLabel: "ਜਵਾਬ",
+      confidenceLabel: "ਭਰੋਸੇਯੋਗਤਾ",
+      sourcesLabel: "ਸਰੋਤ",
+      abstainTitle: "ਕਾਫੀ ਪ੍ਰਮਾਣਿਤ ਸਬੂਤ ਨਹੀਂ ਮਿਲੇ",
+      abstainNote: "ਅੰਦਾਜ਼ਾ ਲਗਾਉਣ ਦੀ ਬਜਾਏ ਸਹਾਇਕ ਇਨਕਾਰ ਕਰਦਾ ਹੈ।",
+      openClassifier: "ਫਾਰਮੂਲੇਸ਼ਨ ਕਲਾਸੀਫਾਇਰ ਖੋਲ੍ਹੋ",
+      newChat: "ਨਵੀਂ ਗੱਲਬਾਤ",
+      responseMeta: "ਜਵਾਬ ਵੇਰਵਾ",
+      noResponseYet: "ਹਾਲੇ ਕੋਈ ਜਵਾਬ ਨਹੀਂ — ਸਵਾਲ ਪੁੱਛੋ।",
+      specialists: "ਜੁੜੇ ਮਾਹਰ",
+      loading: "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…",
+      sourcesTitle: "ਸਰੋਤ ਅਤੇ ਹਵਾਲੇ",
+      noSources: "ਹਵਾਲੇ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ।",
+      disclaimerTitle: "ਬੇਦਾਅਵਾ",
+      disclaimerBody: "IP-SAKTI ਸਹਾਇਕ ਆਮ ਜਾਣਕਾਰੀ ਪ੍ਰਦਾਨ ਕਰਦਾ ਹੈ, ਕਾਨੂੰਨੀ ਸਲਾਹ ਨਹੀਂ।",
+      statusAnswered: "ਜਵਾਬ ਦਿੱਤਾ ਗਿਆ",
+      statusAbstained: "ਇਨਕਾਰ ਕੀਤਾ ਗਿਆ",
+      statusError: "ਗਲਤੀ",
+      classifierTitle: "ਫਾਰਮੂਲੇਸ਼ਨ ਵਰਗੀਕਰਨ",
+      classifyBtn: "ਵਰਗੀਕ੍ਰਿਤ ਕਰੋ",
+      resetBtn: "ਰੀਸੈੱਟ",
+      aboutTitle: "IP-SAKTI ਸਹਾਇਕ ਬਾਰੇ",
+      helpTitle: "ਮਦਦ",
+    },
+    or: {
+      brandSub: "ଆୟୁର୍ବେଦିକ IP ଏବଂ ନିୟାମକ ମାର୍ଗଦର୍ଶନ ପାଇଁ AI ସହାୟକ",
+      navChat: "ଚାଟ୍ ସହାୟକ",
+      navClassifier: "ଫର୍ମୁଲେସନ୍ ବର୍ଗୀକରଣ",
+      navGis: "ଜିଆଇଏସ୍ ଏବଂ ଭୂ-ଉତ୍ପତ୍ତି",
+      navGraph: "ଜ୍ଞାନ ଗ୍ରାଫ୍",
+      navForms: "ବିଧିବଦ୍ଧ ଫର୍ମ",
+      navAudit: "DPDP ଅଡିଟ୍ ଟ୍ରେଲ୍",
+      navAbout: "ବିବରଣୀ",
+      navHelp: "ସାହାଯ୍ୟ",
+      tagline: "ପାରମ୍ପରିକ ଜ୍ଞାନ। ସୁରକ୍ଷିତ ଭବିଷ୍ୟତ।",
+      healthChecking: "ସେବା ଯାଞ୍ଚ ଚାଲିଛି…",
+      healthOk: "ସେବା ଅନଲାଇନ୍ ଅଛି",
+      healthDown: "ସେବା ଅଫଲାଇନ୍ ଅଛି",
+      jurisdiction: "ଅଧିକାରକ୍ଷେତ୍ର",
+      jurisdictionIndia: "ଭାରତ",
+      jurisdictionIntl: "ଆନ୍ତର୍ଜାତୀୟ",
+      formulation: "ଫର୍ମୁଲେସନ୍ ବର୍ଗ",
+      language: "ଭାଷା",
+      autoDetect: "ସ୍ୱୟଂଚାଳିତ ଚିହ୍ନଟ",
+      moreIndicPlaceholder: "ଅଧିକ ଭାରତୀୟ ଭାଷା (22) ▾",
+      chatHint: "ଆୟୁର୍ବେଦିକ ଉତ୍ପାଦ ବିଷୟରେ ଭାରତ କିମ୍ବା ଆନ୍ତର୍ଜାତୀୟ IP / ନିୟାମକ ପ୍ରଶ୍ନ ପଚାରନ୍ତୁ।",
+      classifierHint: "ପ୍ରଶ୍ନଗୁଡ଼ିକର ଉତ୍ତର ଦିଅନ୍ତୁ — ବର୍ଗୀକରଣ ଆପଣଙ୍କ ଉତ୍ପାଦକୁ ଶ୍ରେଣୀଭୁକ୍ତ କରେ।",
+      gisHint: "ଆୟୁର୍ବେଦ ଭୌଗୋଳିକ ସଂକେତ (GI) ଏବଂ ରିମୋଟ ସେନ୍ସିଂ ବିଶ୍ଳେଷଣ।",
+      graphHint: "ଜ୍ଞାନ ଗ୍ରାଫ୍: ଫର୍ମୁଲେସନ୍ → ଆଇନ → ରାୟ → ଚୁକ୍ତିନାମା।",
+      formsHint: "ସରକାରୀ IP India, NBA, FoSCoS ଏବଂ WIPO ଫର୍ମ।",
+      auditHint: "DPDP ଆଇନ 2023 ଅନୁରୂପ ଅଡିଟ୍ ଟ୍ରେଲ୍।",
+      aboutHint: "IP-SAKTI ସହାୟକ କ’ଣ କରେ ଏବଂ କିପରି ସୁରକ୍ଷିତ ରହେ।",
+      helpHint: "ସହାୟକ କିପରି ବ୍ୟବହାର କରିବେ।",
+      escalateBtn: "ବିଶେଷଜ୍ଞଙ୍କ ନିକଟକୁ ପଠାନ୍ତୁ",
+      voiceInput: "ଭଏସ୍ ଇନପୁଟ୍",
+      readAloud: "ଶୁଣନ୍ତୁ",
+      jurisdictionNoteIndia: "ଭାରତ ଅଧିକାରକ୍ଷେତ୍ର — ଉତ୍ତର ଭାରତୀୟ ଆଇନ ପରିସରଭୁକ୍ତ।",
+      jurisdictionNoteIntl: "ଆନ୍ତର୍ଜାତୀୟ ଅଧିକାରକ୍ଷେତ୍ର — କେବଳ ଆନ୍ତର୍ଜାତୀୟ ସନ୍ଧି ଓ ମାର୍ଗ।",
+      demoTitle: "କ୍ୱିକ୍ ଡେମୋ ପରିସ୍ଥିତି",
+      demo1: "କ୍ଲାସିକାଲ୍ ପେଟେଣ୍ଟ",
+      demo1sub: "କ୍ଲାସିକାଲ୍ ଫର୍ମୁଲେସନ୍ ପାଇଁ ସେକ୍ସନ୍ 3(p) ଏବଂ TKDL",
+      demo2: "ABS / ଉଦ୍ଭିଦ ଅନୁମୋଦନ",
+      demo2sub: "ଜୈବ ବିବିଧତା ଆଇନ ମାର୍ଗ",
+      demo3: "ଫର୍ମୁଲେସନ୍ ବର୍ଗୀକରଣ",
+      demo3sub: "ମାର୍ଗଦର୍ଶିତ ପ୍ରଶ୍ନାବଳୀ — ଖାଦ୍ୟ ବନାମ ଔଷଧ",
+      demo4: "GI ପଞ୍ଜୀକରଣ",
+      demo4sub: "ଭୌଗୋଳିକ ସଂକେତ ପଞ୍ଜୀକରଣ",
+      demo5: "ଆନ୍ତର୍ଜାତୀୟ ପେଟେଣ୍ଟ",
+      demo5sub: "ଭାରତ ବାହାରେ ଆବେଦନ ପାଇଁ PCT ମାର୍ଗ",
+      welcomeTitle: "ନମସ୍କାର। ଆପଣଙ୍କ ଆୟୁର୍ବେଦିକ ଉତ୍ପାଦରେ ମୁଁ କିପରି ସାହାଯ୍ୟ କରିପାରିବି?",
+      welcomeSub: "ପ୍ରତ୍ୟେକ ଉତ୍ତର ପ୍ରକୃତ ଆଇନଗତ ଉତ୍ସ ଏବଂ ପ୍ରମାଣ ଉପରେ ଆଧାରିତ।",
+      askPlaceholder: "ଆୟୁର୍ବେଦିକ IP କିମ୍ବା ନିୟାମକ ପ୍ରଶ୍ନ ପଚାରନ୍ତୁ…",
+      composerHint: "କେବଳ ସୂଚନା ପାଇଁ — ଆଇନଗତ ପରାମର୍ଶ ନୁହେଁ।",
+      answerLabel: "ଉତ୍ତର",
+      confidenceLabel: "ବିଶ୍ୱାସ ସ୍ତର",
+      sourcesLabel: "ଉତ୍ସ",
+      abstainTitle: "ଯଥେଷ୍ଟ ପ୍ରମାଣିତ ସାକ୍ଷ୍ୟ ମିଳିଲା ନାହିଁ",
+      abstainNote: "ଅନୁମାନ କରିବା ବଦଳରେ ସହାୟକ ଉତ୍ତର ଦେବାକୁ ମନା କରେ।",
+      openClassifier: "ଫର୍ମୁଲେସନ୍ ବର୍ଗୀକରଣ ଖୋଲନ୍ତୁ",
+      newChat: "ନୂତନ ବାର୍ତ୍ତାଳାପ",
+      responseMeta: "ପ୍ରତିକ୍ରିୟା",
+      noResponseYet: "କୌଣସି ଉତ୍ତର ନାହିଁ — ପ୍ରଶ୍ନ ପଚାରନ୍ତୁ।",
+      specialists: "ସଂଯୁକ୍ତ ବିଶେଷଜ୍ଞ",
+      loading: "ଲୋଡ୍ ହେଉଛି…",
+      sourcesTitle: "ଉତ୍ସ ଓ ଉଦ୍ଧୃତି",
+      noSources: "ଉତ୍ସଗୁଡ଼ିକ ଏଠାରେ ଦେଖାଯିବ।",
+      disclaimerTitle: "ଦାୟିତ୍ୱହୀନତା",
+      disclaimerBody: "IP-SAKTI ସହାୟକ ସାଧାରଣ ସୂଚନା ପ୍ରଦାନ କରେ, ଆଇନଗତ ପରାମର୍ଶ ନୁହେଁ।",
+      statusAnswered: "ଉତ୍ତର ଦିଆଗଲା",
+      statusAbstained: "ଅଗ୍ରାହ୍ୟ କରାଗଲା",
+      statusError: "ତ୍ରୁଟି",
+      classifierTitle: "ଫର୍ମୁଲେସନ୍ ବର୍ଗୀକରଣ",
+      classifyBtn: "ବର୍ଗୀକୃତ କରନ୍ତୁ",
+      resetBtn: "ରିସେଟ୍",
+      aboutTitle: "IP-SAKTI ସହାୟକ ବିଷୟରେ",
+      helpTitle: "ସାହାଯ୍ୟ",
+    },
+    sa: {
+      brandSub: "आयुर्वेदिक बौद्धिक-सम्पत्ति नियामक-मार्गदर्शनाय AI सहायकः",
+      navChat: "संभाषण-सहायकः",
+      navClassifier: "संरचना-वर्गीकरणम्",
+      navGis: "भौगोलिक-मूलम् (GIS)",
+      navGraph: "ज्ञान-मानचित्रम्",
+      navForms: "वैधानिक-प्रपत्राणि",
+      navAudit: "DPDP परीक्षा-वृत्तम्",
+      navAbout: "परिचयः",
+      navHelp: "सहायता",
+      tagline: "पारम्परिकं ज्ञानम्। सुरक्षितं भविष्यम्।",
+      healthChecking: "सेवा परीक्ष्यते…",
+      healthOk: "सेवा संलग्ना अस्ति",
+      healthDown: "सेवा विच्छिन्ना",
+      jurisdiction: "अधिकारक्षेत्रम्",
+      jurisdictionIndia: "भारतम्",
+      jurisdictionIntl: "अन्तर्राष्ट्रियम्",
+      formulation: "संरचना-वर्गः",
+      language: "भाषा",
+      autoDetect: "स्वतः अभिज्ञानम्",
+      moreIndicPlaceholder: "अन्याः भारतीयभाषाः (22) ▾",
+      chatHint: "आयुर्वेदिक-उत्पादानां भारत-अन्तर्राष्ट्रिय-IP नियामक-प्रश्नान् पृच्छन्तु।",
+      classifierHint: "प्रश्नानाम् उत्तराणि ददतु — वर्गीकरणं नियामक-श्रेणीं निर्धारयति।",
+      gisHint: "भौगोलिक-सङ्केताः (GI) तथा पर्यावरणीयं विश्लेषणम्।",
+      graphHint: "ज्ञान-चित्रम्: संरचना → विधयः → न्यायादेशाः → सन्धयः।",
+      formsHint: "आधिकारिकाणि IP India, NBA, FoSCoS, WIPO प्रपत्राणि।",
+      auditHint: "DPDP अधिनियम २०२३ अनुसरणं वृत्तम्।",
+      aboutHint: "IP-SAKTI सहायकः किं करोति कथं च कार्यं करोति।",
+      helpHint: "सहायकस्य उपयोगः कथं करणीयः।",
+      escalateBtn: "मानव-विशेषज्ञं प्रति प्रेष्यताम्",
+      voiceInput: "ध्वनि-प्रविष्टिः",
+      readAloud: "श्रूयताम्",
+      jurisdictionNoteIndia: "भारताधिकारक्षेत्रम् — उत्तराणि केवलं भारतीय-विधि-सीमितानि।",
+      jurisdictionNoteIntl: "अन्तर्राष्ट्रियमधिकारक्षेत्रम् — सन्धयः अन्ताराष्ट्रिय-मार्गाः च।",
+      demoTitle: "शीघ्र-प्रदर्शन-परिदृश्यानि",
+      demo1: "शास्त्रीय-पेटेण्ट्",
+      demo1sub: "शास्त्रीय-संरचनाभ्यः धारा 3(p) तथा TKDL",
+      demo2: "ABS / वनस्पति-स्वीकृतयः",
+      demo2sub: "जैव-विविधता-अधिनियम-मार्गः",
+      demo3: "संरचना-वर्गीकरणम्",
+      demo3sub: "प्रश्नावली — आहारः अथवा औषधम्",
+      demo4: "GI पञ्जीकरणम्",
+      demo4sub: "क्षेत्रीय-उत्पादार्थं भौगोलिक-सङ्केतः",
+      demo5: "अन्तर्राष्ट्रिय-पेटेण्ट्",
+      demo5sub: "भारताद् बहिः प्रवेशनार्थं PCT मार्गः",
+      welcomeTitle: "नमस्ते। भवतः आयुर्वेदिक-उत्पाद-विषये कथं साहाय्यं करवाणि?",
+      welcomeSub: "प्रत्युत्तरं वास्तविक-विधिक-प्रमाणैः सह दीयते।",
+      askPlaceholder: "आयुर्वेदिक IP अथवा नियामक-प्रश्नं पृच्छन्तु…",
+      composerHint: "केवलं सूचनायै — विधिक-परामर्शः न भवति।",
+      answerLabel: "उत्तरम्",
+      confidenceLabel: "विश्वास-स्तरः",
+      sourcesLabel: "स्रोतांसि",
+      abstainTitle: "पर्याप्तं प्रमाणितं साक्ष्यं नास्ति",
+      abstainNote: "अनुमानापेक्षया सहायकः उत्तरं दातुं निराकरोति।",
+      openClassifier: "संरचना-वर्गीकरणम् उद्घाट्यताम्",
+      newChat: "नूतन-वार्तालापः",
+      responseMeta: "प्रतिसादः",
+      noResponseYet: "अद्यापि उत्तरं नास्ति — प्रश्नं पृच्छन्तु।",
+      specialists: "संलग्नाः विशारदाः",
+      loading: "लोड् भवति…",
+      sourcesTitle: "स्रोतांसि उद्धरणानि च",
+      noSources: "अत्र उद्धरणानि द्रक्ष्यन्ते।",
+      disclaimerTitle: "प्रत्याख्यानम्",
+      disclaimerBody: "IP-SAKTI Sahayak सामान्य-सूचनां ददाति, विधिक-परामर्शं न।",
+      statusAnswered: "उत्तरितम्",
+      statusAbstained: "निराकृतम्",
+      statusError: "दोषः",
+      classifierTitle: "संरचना-वर्गीकरणम्",
+      classifyBtn: "वर्गीकरोतु",
+      resetBtn: "पुनः स्थापयतु",
+      aboutTitle: "IP-SAKTI Sahayak विषये",
+      helpTitle: "सहायता",
+    },
+    ur: {
+      brandSub: "آیورویدک آئی پی اور ریگولیٹری رہنمائی کے لیے اے آئی اسسٹنٹ",
+      navChat: "چیٹ معاون",
+      navClassifier: "فارمولیشن درجہ بندی",
+      navGis: "جی آئی ایس اور جغرافیائی ماخذ",
+      navGraph: "علم کا گراف",
+      navForms: "قانونی فارم",
+      navAudit: "ڈی پی ڈی پی آڈٹ ٹریل",
+      navAbout: "تعارف",
+      navHelp: "مدد",
+      tagline: "روایتی علم۔ محفوظ مستقبل۔",
+      healthChecking: "سروس چیک ہو رہی ہے…",
+      healthOk: "سروس آن لائن ہے",
+      healthDown: "سروس دستیاب نہیں",
+      jurisdiction: "دائرہ اختیار",
+      jurisdictionIndia: "بھارت",
+      jurisdictionIntl: "بین الاقوامی",
+      formulation: "فارمولیشن کی قسم",
+      language: "زبان",
+      autoDetect: "خودکار شناخت",
+      moreIndicPlaceholder: "مزید ہندوستانی زبانیں (22) ▾",
+      chatHint: "آیورویدک پروڈکٹ کے بارے میں ہندوستانی یا بین الاقوامی ریگولیٹری سوال پوچھیں۔",
+      classifierHint: "رہنمائی شدہ سوالات کے جوابات دیں — درجہ بندی آپ کے پروڈکٹ کو زمرے میں رکھتی ہے۔",
+      gisHint: "جغرافیائی اشارے (GI) اور سیٹلائٹ ماحولیاتی تجزیہ۔",
+      graphHint: "انٹرایکٹو نالج گراف: فارمولیشنز → قوانین → عدالتی فیصلے → معاہدے۔",
+      formsHint: "سرکاری IP India، NBA، FoSCoS اور WIPO فارمز۔",
+      auditHint: "DPDP ایکٹ 2023 کے مطابق آڈٹ ٹریل۔",
+      aboutHint: "IP-SAKTI اسسٹنٹ کیا کرتا ہے اور کیسے محفوظ رہتا ہے۔",
+      helpHint: "اسسٹنٹ کا استعمال کیسے کریں اور جوابات کیسے پڑھیں۔",
+      escalateBtn: "انسانی ماہر سے رجوع کریں",
+      voiceInput: "آواز کے ذریعے بولیں",
+      readAloud: "سنیں",
+      jurisdictionNoteIndia: "بھارتی دائرہ اختیار — جوابات بھارتی قانون تک محدود ہیں۔",
+      jurisdictionNoteIntl: "بین الاقوامی دائرہ اختیار — بین الاقوامی معاہدے اور راستے۔",
+      demoTitle: "فوری ڈیمو منظرنامے",
+      demo1: "کلاسیکل پیٹنٹ",
+      demo1sub: "کلاسیکل فارمولیشنز کے لیے سیکشن 3(p) اور TKDL",
+      demo2: "ABS / پودوں کی منظوری",
+      demo2sub: "حیاتیاتی تنوع ایکٹ کا راستہ",
+      demo3: "فارمولیشن کی درجہ بندی",
+      demo3sub: "سوالنامہ — خوراک بمقابلہ دوا",
+      demo4: "GI رجسٹریشن",
+      demo4sub: "علاقائی پروڈکٹ کے لیے جغرافیائی اشارہ",
+      demo5: "بین الاقوامی پیٹنٹ",
+      demo5sub: "بھارت سے باہر داخل کرنے کے لیے PCT راستہ",
+      welcomeTitle: "نمستے۔ میں آپ کے آیورویدک پروڈکٹ کے بارے میں کس طرح مدد کر سکتا ہوں؟",
+      welcomeSub: "ہر جواب مستند قانونی ذرائع اور حوالہ جات پر مبنی ہوتا ہے۔",
+      askPlaceholder: "آیورویدک آئی پی یا ریگولیٹری سوال پوچھیں…",
+      composerHint: "صرف معلومات کے لیے — قانونی مشورہ نہیں۔",
+      answerLabel: "جواب",
+      confidenceLabel: "اعتماد کی سطح",
+      sourcesLabel: "ذرائع",
+      abstainTitle: "کافی تصدیق شدہ ثبوت نہیں ملے",
+      abstainNote: "اندازہ لگانے کے بجائے اسسٹنٹ انکار کرتا ہے۔",
+      openClassifier: "فارمولیشن کلاسیفائر کھولیں",
+      newChat: "نئی گفتگو",
+      responseMeta: "ردعمل",
+      noResponseYet: "ابھی کوئی جواب نہیں — سوال پوچھیں۔",
+      specialists: "منسلک ماہرین",
+      loading: "لوڈ ہو رہا ہے…",
+      sourcesTitle: "ذرائع اور حوالہ جات",
+      noSources: "حوالہ جات یہاں ظاہر ہوں گے۔",
+      disclaimerTitle: "دستبرداری",
+      disclaimerBody: "IP-SAKTI Sahayak عمومی معلومات فراہم کرتا ہے، قانونی مشورہ نہیں۔",
+      statusAnswered: "جواب دیا گیا",
+      statusAbstained: "انکار کیا گیا",
+      statusError: "خرابی",
+      classifierTitle: "فارمولیشن درجہ بندی",
+      classifyBtn: "درجہ بندی کریں",
+      resetBtn: "ری سیٹ",
+      aboutTitle: "IP-SAKTI Sahayak کے بارے میں",
+      helpTitle: "مدد",
+    },
+    as: {
+      brandSub: "আয়ুৰ্বেদিক আইপি আৰু নিয়ামক নিৰ্দেশনাৰ বাবে এআই সহায়ক",
+      navChat: "চেট সহায়ক",
+      navClassifier: "ফৰ্মুলেচন শ্ৰেণীবিভাজন",
+      navGis: "জিআইএছ আৰু ভূ-উৎস",
+      navGraph: "জ্ঞান গ্ৰাফ",
+      navForms: "বৈधानिक প্ৰপত্ৰ",
+      navAudit: "ডিপিডিপি অডিট ট্ৰেইল",
+      navAbout: "বিষয়ে",
+      navHelp: "সহায়",
+      tagline: "পৰম্পৰাগত জ্ঞান। সুৰক্ষিত ভৱিষ্যত।",
+      healthChecking: "সেৱা পৰীক্ষা কৰা হৈছে…",
+      healthOk: "সেৱা অনলাইন আছে",
+      healthDown: "সেৱা অফলাইন আছে",
+      jurisdiction: "অধিকাৰক্ষেত্ৰ",
+      jurisdictionIndia: "ভাৰত",
+      jurisdictionIntl: "আন্তঃৰাষ্ট্ৰীয়",
+      formulation: "ফৰ্মুলেচন শ্ৰেণী",
+      language: "ভাষা",
+      autoDetect: "স্বয়ংক্রিয় চিনাক্তকৰণ",
+      moreIndicPlaceholder: "অধিক ভাৰতীয় ভাষা (22) ▾",
+      chatHint: "আয়ুৰ্বেদিক সামগ্ৰী সম্পৰ্কীয় ভাৰত বা আন্তঃৰাষ্ট্ৰীয় আইপি প্রশ্ন সোধক।",
+      classifierHint: "নিৰ্দেশিত প্ৰশ্নৰ উত্তৰ দিয়ক — শ্ৰেণীবিভাজকে নিয়ামক শ্ৰেণী নিৰ্ধাৰণ কৰে।",
+      gisHint: "আয়ুৰ্বেদ ভৌগোলিক ইংগিত (GI) আৰু ৰিম'ট চেন্সিং বিশ্লেষণ।",
+      graphHint: "জ্ঞান গ্ৰাফ: ফৰ্মুলেচন → বিধি → ন্যায়ালয়ৰ ৰায় → চুক্তি।",
+      formsHint: "চৰকাৰী আইপি ইণ্ডিয়া, এনবিএ, ফচকছ আৰু ৱাইপ' প্ৰপত্ৰ।",
+      auditHint: "DPDP আইন ২০২৩ অনুগত অডিট ট্ৰেইল।",
+      aboutHint: "সহায়কে কি কৰে আৰু কেনেকৈ সুৰক্ষিত থাকে।",
+      helpHint: "সহায়ক কেনেকৈ ব্যৱহাৰ কৰিব লাগে।",
+      escalateBtn: "বিশেষজ্ঞলৈ প্ৰেৰণ কৰক",
+      voiceInput: "কণ্ঠস্বৰ ইনপুট",
+      readAloud: "শুনক",
+      jurisdictionNoteIndia: "ভাৰত অধিকাৰক্ষেত্ৰ — উত্তৰসমূহ ভাৰতীয় আইনৰ অধীনত সীমাবদ্ধ।",
+      jurisdictionNoteIntl: "আন্তঃৰাষ্ট্ৰীয় অধিকাৰক্ষেত্ৰ — চুক্তি আৰু আন্তঃৰাষ্ট্ৰীয় পথ।",
+      demoTitle: "দ্ৰুত ডেমো পৰিস্থিতি",
+      demo1: "ক্লাছিকেল পেটেণ্ট",
+      demo1sub: "ক্লাছিকেল ফৰ্মুলেচনৰ বাবে ধাৰা 3(p) আৰু টিকেডিএল",
+      demo2: "এবিএছ / উদ্ভিদ অনুমোদন",
+      demo2sub: "উদ্ভিদভিত্তিক সামগ্ৰীৰ বাবে জৈৱ বৈচিত্ৰ্য আইন",
+      demo3: "ফৰ্মুলেচন শ্ৰেণীবিভাজন",
+      demo3sub: "প্ৰশ্নাৱলী — খাদ্য নে ঔষধ",
+      demo4: "জিআই পঞ্জীয়ন",
+      demo4sub: "ভৌগোলিক ইংগিত পঞ্জীয়ন",
+      demo5: "আন্তঃৰাষ্ট্ৰীয় পেটেণ্ট",
+      demo5sub: "ভাৰতৰ বাহিৰত আবেদনৰ বাবে পিচিটি পথ",
+      welcomeTitle: "নমস্কাৰ। আপোনাৰ আয়ুৰ্বেদিক সামগ্ৰীত মই কেনেকৈ সহায় কৰিব পাৰোঁ?",
+      welcomeSub: "প্ৰতিটো উত্তৰ বাস্তৱ আইনী উৎস আৰু প্ৰমাণৰ ভিত্তিত দিয়া হয়।",
+      askPlaceholder: "আয়ুৰ্বেদিক আইপি বা নিয়ামক প্ৰশ্ন সোধক…",
+      composerHint: "কেৱল তথ্যৰ বাবে — আইনী পৰামৰ্শ নহয়।",
+      answerLabel: "উত্তৰ",
+      confidenceLabel: "বিশ্বাসৰ স্তৰ",
+      sourcesLabel: "উৎস",
+      abstainTitle: "পৰ্যাপ্ত প্ৰমাণিত তথ্য নাই",
+      abstainNote: "অনুমান কৰাৰ পৰিৱৰ্তে সহায়কে অস্বীকাৰ কৰে।",
+      openClassifier: "ফৰ্মুলেচন শ্ৰেণীবিভাজন খোলক",
+      newChat: "নতুন বাৰ্তালাপ",
+      responseMeta: "প্ৰতিক্ৰিয়া",
+      noResponseYet: "কোনো উত্তৰ নাই — প্ৰশ্ন সোধক।",
+      specialists: "সংলগ্ন বিশেষজ্ঞসকল",
+      loading: "লোড হৈ আছে…",
+      sourcesTitle: "উৎস আৰু উদ্ধৃতি",
+      noSources: "উদ্ধৃতি ইয়াত দেখা যাব।",
+      disclaimerTitle: "দায় অস্বীকাৰ",
+      disclaimerBody: "IP-SAKTI Sahayak সাধাৰণ তথ্য প্ৰদান কৰে, আইনী পৰামৰ্শ নহয়।",
+      statusAnswered: "উত্তৰ দিয়া হ'ল",
+      statusAbstained: "অস্বীকাৰ কৰা হ'ল",
+      statusError: "ত্রুটি",
+      classifierTitle: "ফৰ্মুলেচন শ্ৰেণীবিভাজন",
+      classifyBtn: "শ্ৰেণীবিভাজন কৰক",
+      resetBtn: "ৰিছেট",
+      aboutTitle: "IP-SAKTI Sahayak সম্পৰ্কে",
+      helpTitle: "সহায়",
+    }
   };
+
+  // Fallback generator for remaining scheduled languages (Bodo, Dogri, Kashmiri, Konkani, Maithili, Manipuri, Nepali, Santali, Sindhi)
+  function getFallbackBundle(lang) {
+    const meta = SCHEDULED_LANGUAGES[lang] || { name: lang, native: lang };
+    const base = Object.assign({}, labels.hi || labels.en);
+    base.moreIndicPlaceholder = `${meta.native} (${meta.name}) ▾`;
+    return base;
+  }
 
   let current = "en";
 
+  // Check saved language on module initialization
+  try {
+    const saved = localStorage.getItem("ipsakti_lang");
+    if (saved && (SCHEDULED_LANGUAGES[saved] || labels[saved])) {
+      current = saved;
+    }
+  } catch (e) {}
+
   function t(key) {
-    return (labels[current] && labels[current][key])
-      || labels.en[key]
-      || key;
+    if (labels[current] && labels[current][key] !== undefined) {
+      return labels[current][key];
+    }
+    if (labels.en && labels.en[key] !== undefined) {
+      return labels.en[key];
+    }
+    return key;
   }
 
+  /**
+   * Dynamically loads the translation bundle for a language.
+   * Order of precedence:
+   * 1. In-memory `labels[lang]`
+   * 2. `localStorage.getItem('i18n_bundle_' + lang)`
+   * 3. Fetch from `/api/bhashini/ui-bundle?lang=${lang}`
+   * 4. Safe fallback bundle
+   */
+  async function loadBundle(lang) {
+    if (!lang) return labels.en;
+    if (labels[lang]) {
+      return labels[lang];
+    }
+
+    // Check localStorage cache
+    try {
+      const cached = localStorage.getItem("i18n_bundle_" + lang);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (parsed && typeof parsed === "object" && parsed.navChat) {
+          labels[lang] = parsed;
+          return labels[lang];
+        }
+      }
+    } catch (e) {
+      console.warn("Could not read i18n bundle from localStorage:", e);
+    }
+
+    // Fetch from backend Bhashini UI bundle endpoint
+    try {
+      const resp = await fetch(`/api/bhashini/ui-bundle?lang=${encodeURIComponent(lang)}`);
+      if (resp.ok) {
+        const data = await resp.json();
+        const bundle = data.bundle || data;
+        if (bundle && typeof bundle === "object") {
+          labels[lang] = Object.assign({}, labels.en, bundle);
+          try {
+            localStorage.setItem("i18n_bundle_" + lang, JSON.stringify(labels[lang]));
+          } catch (e) {}
+          return labels[lang];
+        }
+      }
+    } catch (err) {
+      console.warn(`Dynamic i18n bundle fetch failed for ${lang}:`, err);
+    }
+
+    // Fallback if not fetched
+    if (!labels[lang]) {
+      labels[lang] = getFallbackBundle(lang);
+      try {
+        localStorage.setItem("i18n_bundle_" + lang, JSON.stringify(labels[lang]));
+      } catch (e) {}
+    }
+    return labels[lang];
+  }
+
+  /**
+   * Applies the selected language to the entire DOM.
+   * Updates [data-i18n], [data-i18n-ph], dropdowns, placeholders, and demo cards.
+   */
   function apply(lang) {
-    current = labels[lang] ? lang : "en";
-    document.querySelectorAll("[data-i18n]").forEach((el) => {
-      const key = el.getAttribute("data-i18n");
-      const value = labels[current][key];
-      if (typeof value === "string") el.textContent = value;
+    current = labels[lang] ? lang : (SCHEDULED_LANGUAGES[lang] ? lang : "en");
+
+    // Save chosen language to localStorage
+    try {
+      localStorage.setItem("ipsakti_lang", current);
+    } catch (e) {}
+
+    document.documentElement.lang = current;
+
+    // 1. Update all [data-i18n] text elements, preserving SVG icons if present
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+      const key = element.getAttribute("data-i18n");
+      const text = t(key);
+      if (typeof text !== "string") return;
+
+      const svg = element.querySelector("svg");
+      if (svg) {
+        // Element contains an SVG child (e.g. icon button or header badge)
+        const innerSpan = element.querySelector("span:not(.badge-bhashini):not(.icon)");
+        if (innerSpan && !innerSpan.hasAttribute("data-i18n")) {
+          innerSpan.textContent = text;
+        } else {
+          // Replace text node after icon
+          let updated = false;
+          element.childNodes.forEach((node) => {
+            if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim().length > 0) {
+              node.nodeValue = " " + text;
+              updated = true;
+            }
+          });
+          if (!updated) {
+            element.appendChild(document.createTextNode(" " + text));
+          }
+        }
+      } else {
+        element.textContent = text;
+      }
     });
-    document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
-      const key = el.getAttribute("data-i18n-ph");
-      const value = labels[current][key];
-      if (typeof value === "string") el.setAttribute("placeholder", value);
+
+    // 2. Update all [data-i18n-ph] input/textarea placeholders
+    document.querySelectorAll("[data-i18n-ph]").forEach((element) => {
+      const key = element.getAttribute("data-i18n-ph");
+      const text = t(key);
+      if (typeof text === "string") {
+        element.setAttribute("placeholder", text);
+      }
     });
-    document.documentElement.lang = current === "hi" ? "hi" : "en";
+
+    // 3. Update Dropdown Options in the DOM
+    const formulationSelect = document.getElementById("formulationSelect");
+    if (formulationSelect) {
+      const autoOpt = formulationSelect.querySelector("option[value='']");
+      if (autoOpt) autoOpt.textContent = t("autoDetect");
+    }
+
+    const moreIndicSelect = document.getElementById("moreIndicLangSelect");
+    if (moreIndicSelect) {
+      const defaultOpt = moreIndicSelect.querySelector("option[disabled]");
+      if (defaultOpt) {
+        defaultOpt.textContent = t("moreIndicPlaceholder");
+      }
+    }
+
+    const clsJurisdiction = document.getElementById("clsJurisdiction");
+    if (clsJurisdiction) {
+      const optIndia = clsJurisdiction.querySelector("option[value='India']");
+      if (optIndia) optIndia.textContent = t("jurisdictionIndia");
+      const optIntl = clsJurisdiction.querySelector("option[value='International']");
+      if (optIntl) optIntl.textContent = t("jurisdictionIntl");
+    }
+
+    // 4. Update dynamic view header titles and hints if currently active
+    const viewTitle = document.getElementById("viewTitle");
+    const activeNav = document.querySelector(".nav-item.active");
+    if (viewTitle && activeNav && activeNav.dataset.view) {
+      const viewMap = {
+        chat: "navChat",
+        classifier: "navClassifier",
+        gis: "navGis",
+        graph: "navGraph",
+        forms: "navForms",
+        audit: "navAudit",
+        about: "navAbout",
+        help: "navHelp",
+      };
+      const titleKey = viewMap[activeNav.dataset.view] || "navChat";
+      viewTitle.textContent = t(titleKey);
+    }
+
+    // 5. Notify listeners across the application
     document.dispatchEvent(new CustomEvent("i18n:changed", { detail: { lang: current } }));
+  }
+
+  /**
+   * Asynchronously loads the bundle if not present, then applies it to the DOM.
+   */
+  async function applyAsync(lang) {
+    const target = lang || "en";
+    await loadBundle(target);
+    apply(target);
+    return target;
   }
 
   return {
     t,
     apply,
-    get lang() { return current; },
+    applyAsync,
+    loadBundle,
+    get lang() {
+      return current;
+    },
+    get languages() {
+      return SCHEDULED_LANGUAGES;
+    },
+    getLanguageName: (code) => {
+      const l = SCHEDULED_LANGUAGES[code];
+      return l ? l.native : code;
+    },
+    getLanguageFullName: (code) => {
+      const l = SCHEDULED_LANGUAGES[code];
+      return l ? `${l.native} (${l.name})` : code;
+    },
   };
 })();
