@@ -539,6 +539,46 @@ def _attach_frontend(app) -> None:
             "retention_policy": "36-month queryable tamper-evident log",
         }
 
+    @app.get("/api/bhashini/languages", include_in_schema=True)
+    def bhashini_languages() -> dict:
+        from ipsakti.core.bhashini import get_bhashini_client
+        client = get_bhashini_client()
+        return {
+            "status": "ok",
+            "configured": client.is_configured,
+            "languages": client.get_supported_languages(),
+            "provider": "Digital India Bhashini Division (DIBD), MeitY",
+        }
+
+    @app.post("/api/bhashini/translate", include_in_schema=True)
+    def bhashini_translate(payload: dict) -> dict:
+        from ipsakti.core.bhashini import get_bhashini_client
+        text = payload.get("text", "")
+        source_lang = payload.get("source_language", "en")
+        target_lang = payload.get("target_language", "hi")
+        client = get_bhashini_client()
+        translated = client.translate(text, source_lang=source_lang, target_lang=target_lang)
+        return {
+            "status": "ok",
+            "source_text": text,
+            "translated_text": translated,
+            "source_language": source_lang,
+            "target_language": target_lang,
+            "provider": "bhashini",
+        }
+
+    @app.get("/api/bhashini/status", include_in_schema=True)
+    def bhashini_status() -> dict:
+        from ipsakti.core.bhashini import get_bhashini_client
+        client = get_bhashini_client()
+        return {
+            "configured": client.is_configured,
+            "user_id": (client.user_id[:6] + "...") if client.user_id else None,
+            "pipeline_id": client.pipeline_id,
+            "mission": "National Language Translation Mission (NLTM)",
+            "authority": "Ministry of Electronics and Information Technology (MeitY)",
+        }
+
     frontend_dir = _REPO_ROOT / "frontend"
     if frontend_dir.is_dir():
         app.mount("/", StaticFiles(directory=str(frontend_dir), html=True),

@@ -527,16 +527,96 @@ const App = (() => {
     addFoot(shell, response);
   }
 
-  function speakText(text) {
+  function speakText(text, lang = null) {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = state.language === "hi" ? "hi-IN" : "en-IN";
+    const targetLang = lang || state.language;
+    const langMap = {
+      hi: "hi-IN", ta: "ta-IN", te: "te-IN", bn: "bn-IN",
+      mr: "mr-IN", gu: "gu-IN", kn: "kn-IN", ml: "ml-IN",
+      pa: "pa-IN", or: "or-IN", en: "en-IN"
+    };
+    utterance.lang = langMap[targetLang] || (targetLang === "hi" ? "hi-IN" : "en-IN");
     utterance.rate = 1.0;
     window.speechSynthesis.speak(utterance);
   }
 
   function addFoot(shell, response) {
+    if (response.answer && response.answer.trim()) {
+      const bhashiniBar = document.createElement("div");
+      bhashiniBar.className = "bhashini-toolbar";
+      bhashiniBar.innerHTML = `
+        <span class="bhashini-tag">🌐 Bhashini NLTM:</span>
+        <button type="button" class="btn-translate-lang" data-lang="hi" title="Translate to Hindi">हिन्दी</button>
+        <button type="button" class="btn-translate-lang" data-lang="ta" title="Translate to Tamil">தமிழ்</button>
+        <button type="button" class="btn-translate-lang" data-lang="te" title="Translate to Telugu">తెలుగు</button>
+        <button type="button" class="btn-translate-lang" data-lang="bn" title="Translate to Bengali">বাংলা</button>
+        <button type="button" class="btn-translate-lang" data-lang="mr" title="Translate to Marathi">मराठी</button>
+        <button type="button" class="btn-translate-lang" data-lang="gu" title="Translate to Gujarati">ગુજરાતી</button>
+        <button type="button" class="btn-translate-lang" data-lang="en" title="Original English">English</button>
+        <button type="button" class="btn-speak-answer" title="Read Aloud with Text-to-Speech">🔊 Listen</button>
+      `;
+
+      let originalAnswerText = response.answer;
+      let currentText = response.answer;
+      let currentLang = "en";
+
+      bhashiniBar.addEventListener("click", async (e) => {
+        const speakBtn = e.target.closest(".btn-speak-answer");
+        if (speakBtn) {
+          speakText(currentText, currentLang);
+          return;
+        }
+
+        const btn = e.target.closest(".btn-translate-lang");
+        if (!btn) return;
+        const targetLang = btn.dataset.lang;
+
+        if (targetLang === "en") {
+          currentText = originalAnswerText;
+          currentLang = "en";
+          const firstSection = shell.body.querySelector(".answer-body") || shell.body.firstChild;
+          if (firstSection) {
+            firstSection.innerHTML = answerParagraphs(originalAnswerText).innerHTML;
+          }
+          return;
+        }
+
+        const originalBtnLabel = btn.textContent;
+        btn.textContent = "⏳...";
+        btn.disabled = true;
+
+        try {
+          const res = await fetch("/api/bhashini/translate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              text: originalAnswerText,
+              source_language: "en",
+              target_language: targetLang,
+            }),
+          });
+          const data = await res.json();
+          if (data.status === "ok" && data.translated_text) {
+            currentText = data.translated_text;
+            currentLang = targetLang;
+            const firstSection = shell.body.querySelector(".answer-body") || shell.body.firstChild;
+            if (firstSection) {
+              firstSection.innerHTML = answerParagraphs(data.translated_text).innerHTML;
+            }
+          }
+        } catch (err) {
+          console.error("Bhashini translation request failed:", err);
+        } finally {
+          btn.textContent = originalBtnLabel;
+          btn.disabled = false;
+        }
+      });
+
+      shell.card.appendChild(bhashiniBar);
+    }
+
     const foot = document.createElement("div");
     foot.className = "answer-foot";
     foot.textContent = response.disclaimer || "";
