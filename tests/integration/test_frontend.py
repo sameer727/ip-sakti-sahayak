@@ -83,29 +83,26 @@ def test_api_endpoints_unaffected_by_static_mount(client):
 
 
 def test_indic_multilingual_frontend_internationalization(client):
-    """Verify that index.html contains all 22 scheduled Indic languages in moreIndicLangSelect,
-    the Bhashini badge, language toggle, and that assets load properly."""
+    """Verify that index.html contains all 22 scheduled Indic languages plus English in languageSelect,
+    the Bhashini badge, and that assets load properly."""
     res = client.get("/")
     assert res.status_code == 200
     html = res.text
 
-    # 1. Check quick toggle for English and Hindi
-    assert 'id="languageToggle"' in html
-    assert 'data-value="en"' in html
-    assert 'data-value="hi"' in html
+    # 1. Check unified languageSelect dropdown
+    assert 'id="languageSelect"' in html
 
     # 2. Check Bhashini badge and spinner
     assert 'badge-bhashini' in html
     assert 'id="langSpinner"' in html
 
-    # 3. Check moreIndicLangSelect and all 22 scheduled languages
-    assert 'id="moreIndicLangSelect"' in html
-    scheduled_22 = [
-        "as", "bn", "brx", "doi", "gu", "hi", "kn", "ks", "kok", "mai",
+    # 3. Check all 22 scheduled languages + English in languageSelect
+    all_supported = [
+        "en", "as", "bn", "brx", "doi", "gu", "hi", "kn", "ks", "kok", "mai",
         "ml", "mni", "mr", "ne", "or", "pa", "sa", "sat", "sd", "ta", "te", "ur"
     ]
-    for code in scheduled_22:
-        assert f'value="{code}"' in html, f"Missing scheduled language {code} in moreIndicLangSelect"
+    for code in all_supported:
+        assert f'value="{code}"' in html, f"Missing scheduled language {code} in languageSelect"
 
     # 4. Check i18n.js and styles.css content
     i18n_res = client.get("/js/i18n.js")

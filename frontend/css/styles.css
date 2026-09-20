@@ -184,25 +184,12 @@ button { font-family: inherit; font-size: inherit; color: inherit; cursor: point
 .select-inline { width: auto; }
 
 /* Language Selector & Indic Controls */
-.lang-control-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
 .control-label-row {
   display: flex;
   align-items: center;
   gap: 6px;
 }
-.lang-controls-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.lang-segmented {
-  display: inline-flex;
-}
+.select-language,
 .select-indic {
   font-family: var(--font);
   font-size: 13px;
@@ -211,7 +198,7 @@ button { font-family: inherit; font-size: inherit; color: inherit; cursor: point
   background-color: var(--surface);
   border: 1px solid var(--line);
   border-radius: 9px;
-  padding: 5px 28px 5px 10px;
+  padding: 6px 30px 6px 10px;
   cursor: pointer;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -219,13 +206,15 @@ button { font-family: inherit; font-size: inherit; color: inherit; cursor: point
   -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231a6b45' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 8px center;
+  background-position: right 10px center;
   min-width: 175px;
-  height: 32px;
+  height: 33px;
 }
+.select-language:hover,
 .select-indic:hover {
   border-color: var(--green-600);
 }
+.select-language:focus,
 .select-indic:focus {
   border-color: var(--green-700);
   box-shadow: 0 0 0 3px rgba(26, 107, 69, 0.15);

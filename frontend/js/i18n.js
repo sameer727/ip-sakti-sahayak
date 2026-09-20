@@ -1297,12 +1297,9 @@ const I18N = (() => {
       if (autoOpt) autoOpt.textContent = t("autoDetect");
     }
 
-    const moreIndicSelect = document.getElementById("moreIndicLangSelect");
-    if (moreIndicSelect) {
-      const defaultOpt = moreIndicSelect.querySelector("option[disabled]");
-      if (defaultOpt) {
-        defaultOpt.textContent = t("moreIndicPlaceholder");
-      }
+    const langSelect = document.getElementById("languageSelect");
+    if (langSelect && langSelect.value !== lang) {
+      langSelect.value = lang;
     }
 
     const clsJurisdiction = document.getElementById("clsJurisdiction");

@@ -157,43 +157,37 @@
             <option value="" data-i18n="autoDetect">Auto-detect</option>
           </select>
         </div>
-        <div class="control-group lang-control-group">
+        <div class="control-group">
           <div class="control-label-row">
             <span class="control-label"><svg class="icon icon-sm"><use href="#i-globe"/></svg><span data-i18n="language">Language</span></span>
             <span class="badge-bhashini" title="National Language Translation Mission (MeitY)">Bhashini</span>
             <span id="langSpinner" class="lang-spinner hidden" title="Translating UI via Bhashini NLTM..." aria-label="Translating"></span>
           </div>
-          <div class="lang-controls-row">
-            <div class="segmented lang-segmented" id="languageToggle" role="group" aria-label="Quick Language Toggle">
-              <button type="button" class="seg active" data-value="en" title="English">English</button>
-              <button type="button" class="seg" data-value="hi" title="हिन्दी (Hindi)">हिन्दी</button>
-            </div>
-            <select id="moreIndicLangSelect" class="select select-indic" aria-label="22 Scheduled Indic Languages">
-              <option value="" disabled selected data-i18n="moreIndicPlaceholder">More Indic Languages (22) ▾</option>
-              <option value="as">অসমীয়া (Assamese)</option>
-              <option value="bn">বাংলা (Bengali)</option>
-              <option value="brx">बड़ो (Bodo)</option>
-              <option value="doi">डोगरी (Dogri)</option>
-              <option value="gu">ગુજરાતી (Gujarati)</option>
-              <option value="hi">हिन्दी (Hindi)</option>
-              <option value="kn">ಕನ್ನಡ (Kannada)</option>
-              <option value="ks">कॉशुर (Kashmiri)</option>
-              <option value="kok">कोंकणी (Konkani)</option>
-              <option value="mai">मैथिली (Maithili)</option>
-              <option value="ml">മലയാളം (Malayalam)</option>
-              <option value="mni">মৈতৈলোন্ (Manipuri)</option>
-              <option value="mr">मराठी (Marathi)</option>
-              <option value="ne">नेपाली (Nepali)</option>
-              <option value="or">ଓଡ଼ିଆ (Odia)</option>
-              <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-              <option value="sa">संस्कृतम् (Sanskrit)</option>
-              <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
-              <option value="sd">سنڌي (Sindhi)</option>
-              <option value="ta">தமிழ் (Tamil)</option>
-              <option value="te">తెలుగు (Telugu)</option>
-              <option value="ur">اردو (Urdu)</option>
-            </select>
-          </div>
+          <select id="languageSelect" class="select select-language" aria-label="Select Language">
+            <option value="en" selected>English (English)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="as">অসমীয়া (Assamese)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="brx">बड़ो (Bodo)</option>
+            <option value="doi">डोगरी (Dogri)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ks">कॉशुर (Kashmiri)</option>
+            <option value="kok">कोंकणी (Konkani)</option>
+            <option value="mai">मैथिली (Maithili)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="mni">মৈতৈলোন্ (Manipuri)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="ne">नेपाली (Nepali)</option>
+            <option value="or">ଓଡ଼ିଆ (Odia)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="sa">संस्कृतम् (Sanskrit)</option>
+            <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
+            <option value="sd">سنڌي (Sindhi)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="ur">اُردُو (Urdu)</option>
+          </select>
         </div>
       </div>
     </header>

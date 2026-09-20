@@ -182,20 +182,10 @@ const App = (() => {
 
     state.language = lang;
 
-    // Sync quick toggle buttons
-    const toggleBtns = document.querySelectorAll("#languageToggle .seg");
-    toggleBtns.forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.value === lang);
-    });
-
-    // Sync moreIndicLangSelect dropdown
-    const moreSelect = el("moreIndicLangSelect");
-    if (moreSelect) {
-      if (lang === "en") {
-        moreSelect.value = "";
-      } else {
-        moreSelect.value = lang;
-      }
+    // Sync languageSelect dropdown
+    const langSelect = el("languageSelect");
+    if (langSelect && langSelect.value !== lang) {
+      langSelect.value = lang;
     }
 
     try {
@@ -228,15 +218,9 @@ const App = (() => {
       updateJurisdictionNote();
     });
 
-    el("languageToggle").addEventListener("click", async (event) => {
-      const button = event.target.closest(".seg");
-      if (!button) return;
-      await setLanguage(button.dataset.value);
-    });
-
-    const moreSelect = el("moreIndicLangSelect");
-    if (moreSelect) {
-      moreSelect.addEventListener("change", async (event) => {
+    const langSelect = el("languageSelect");
+    if (langSelect) {
+      langSelect.addEventListener("change", async (event) => {
         const lang = event.target.value;
         if (lang) {
           await setLanguage(lang);

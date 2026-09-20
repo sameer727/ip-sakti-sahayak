@@ -34,6 +34,7 @@ SUPPORTED_LANGUAGES: Dict[str, Dict[str, str]] = {
     "brx": {"name": "Bodo", "native": "बड़ो", "script": "Deva"},
     "doi": {"name": "Dogri", "native": "डोगरी", "script": "Deva"},
     "gom": {"name": "Konkani", "native": "कोंकणी", "script": "Deva"},
+    "kok": {"name": "Konkani", "native": "कोंकणी", "script": "Deva"},
     "gu": {"name": "Gujarati", "native": "ગુજરાતી", "script": "Gujr"},
     "hi": {"name": "Hindi", "native": "हिन्दी", "script": "Deva"},
     "kn": {"name": "Kannada", "native": "ಕನ್ನಡ", "script": "Knda"},
@@ -549,6 +550,8 @@ def get_ui_bundle(
       the translated dictionary.
     """
     lang = (target_lang or "en").strip().lower()
+    if lang == "kok":
+        lang = "gom"
 
     if lang == "en":
         return dict(UI_BUNDLE_EN)
